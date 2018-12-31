@@ -14,22 +14,24 @@
     return 7 - weekday + date.getDate();
   }
   var getAllSundaysInMonth = function(y, m) {
-    var date = new Date(y, m - 1, getNextSunday(y, m));
+    var datemonth = m - 1;
+    var date = new Date(y, datemonth, getNextSunday(y, m));
     var sundays = [date.getDate()];
-    while(date.getMonth() === m) {
+    while(date.getMonth() === datemonth) {
       date.setDate(date.getDate() + 7);
-      if (date.getMonth() === m) {
+      if (date.getMonth() === datemonth) {
         sundays.push(date.getDate());
       }
     }
     return sundays;
   }
   var getLastSundayInMonth = function(y, m) {
+    var datemonth = m - 1;
     var sunday = getNextSunday(y, m);
-    var date = new Date(y, m - 1, sunday);
-    while(date.getMonth() === m) {
+    var date = new Date(y, datemonth, sunday);
+    while(date.getMonth() === datemonth) {
       date.setDate(date.getDate() + 7);
-      if (date.getMonth() === m) {
+      if (date.getMonth() === datemonth) {
         sunday = date.getDate();
       }
     }
