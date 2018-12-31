@@ -17,9 +17,12 @@
   var SundayPicker = withState({
     year: currentYear,
     month: 7,
-    day: getNextSunday(currentYear, 7)
+    date: getNextSunday(currentYear, 7)
   })(function(props) {
-    return el('div', null, year + '-' + (month + 1) + '-' + day);
+    var year = props.year;
+    var month = props.month;
+    var date = props.date;
+    return el('div', null, year + '-' + (month + 1) + '-' + date);
   });
 
   registerBlockType('svenskaskolan/calendar', {
