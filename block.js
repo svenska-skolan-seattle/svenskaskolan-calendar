@@ -8,13 +8,13 @@
   var SelectControl = components.SelectControl
 
   var getNextSunday = function(y, m, d) {
-    var date = new Date(y, m, d || 1);
+    var date = new Date(y, m - 1, d || 1);
     var weekday = date.getDay();
     if (weekday === 0) return date.getDate();
     return 7 - weekday + date.getDate();
   }
   var getAllSundaysInMonth = function(y, m) {
-    var date = new Date(y, m, getNextSunday(y, m));
+    var date = new Date(y, m - 1, getNextSunday(y, m));
     var sundays = [date.getDate()];
     while(date.getMonth() === m) {
       date.setDate(date.getDate() + 7);
@@ -26,7 +26,7 @@
   }
   var getLastSundayInMonth = function(y, m) {
     var sunday = getNextSunday(y, m);
-    var date = new Date(y, m, sunday);
+    var date = new Date(y, m - 1, sunday);
     while(date.getMonth() === m) {
       date.setDate(date.getDate() + 7);
       if (date.getMonth() === m) {
@@ -38,19 +38,13 @@
   var formatYearMonthDate = function(y, m, d) {
     return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
   }
-  var formatDate = function(date) {
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    var d = date.getDate();
-    return formatYearMonthDate(y, m, d);
-  }
   var getDefaultFirstSunday = function() {
     var currentYear = new Date().getFullYear()
-    return formatDate(new Date(currentYear, 7, getNextSunday(currentYear, 7)));
+    return formatYearMonthDate(currentYear, 8, getNextSunday(currentYear, 8));
   }
   var getDefaultLastSunday = function() {
     var nextYear = new Date().getFullYear() + 1
-    return formatDate(new Date(nextYear, 5, getLastSundayInMonth(nextYear, 5)));
+    return formatYearMonthDate(nextYear, 6, getLastSundayInMonth(nextYear, 6));
   }
   var getYearOptions = function() {
     var currentYear = new Date().getFullYear();
@@ -76,7 +70,7 @@
     ]
   }
   var getDateOptions = function(y, m) {
-    var sundays = getAllSundaysInMonth(y, m - 1);
+    var sundays = getAllSundaysInMonth(y, m);
     var options = [];
     for(var i = 0; i < sundays.length; ++i) {
       options.push({label: String(sundays[i]), value: String(sundays[i])});
@@ -110,7 +104,7 @@
           }
         }),
         el(SelectControl, {
-          value: m,
+          value: d,
           options: getDateOptions(y, m),
           onChange: function(newD) {
             onChange(y, m, newD);
@@ -144,7 +138,8 @@
             el(SundayPicker, {
               value: attributes.firstSunday || getDefaultFirstSunday(),
               onChange: function(val) {
-                props.setAttribute({firstSunday: val})
+                console.log(val);
+                //props.setAttribute({firstSunday: val})
               }
             })
           ),
@@ -153,7 +148,8 @@
             el(SundayPicker, {
               value: attributes.lastSunday || getDefaultLastSunday(),
               onChange: function(val) {
-                props.setAttribute({lastSunday: val})
+                console.log(val);
+                //props.setAttribute({lastSunday: val})
               }
             })
           )
