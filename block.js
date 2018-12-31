@@ -255,7 +255,7 @@
           
             el('div', {className: 'ssc-create-schedule-container'}, 
               el(Button, {
-                isDefault: true,
+                isPrimary: true,
                 onClick: function() {
                   var schedule = updateSchedule(
                     attributes.schedule || [],
@@ -266,7 +266,7 @@
               }, 'Update Schedule'),
 
               el(Button, {
-                isDefault: false,
+                isDefault: true,
                 onClick: function() {
                   var schedule = createSchedule(
                     attributes.firstSunday || getDefaultFirstSunday(), 

@@ -1,9 +1,11 @@
 .ssc-sunday-pickers-container {
   display: flex;
   justify-content: flex-start;
+  flex-direction: column;
 }
 
 .ssc-create-schedule-container {
+  display: flex;
   margin: 1rem 0;
 }
 
