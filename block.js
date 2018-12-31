@@ -18,7 +18,7 @@
   var getNextSunday = function(y, m, d) {
     var date = new Date(y, m - 1, d || 1);
     var weekday = date.getDay();
-    if (weekday === 0) return date.getDate();
+    if (weekday === 0) return date;
     date.setDate(7 - weekday + date.getDate());
     return date;
   }
