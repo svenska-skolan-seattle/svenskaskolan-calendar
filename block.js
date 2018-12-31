@@ -295,7 +295,9 @@
           ),
 
           el('ul', {className: 'ssc-schedule'}, 
-            (attributes.schedule || []).map(function(sunday) {
+            (!attributes.schedule || !attributes.schedule.length) 
+            ? 'Use "Block" settings to the right to generate the schedule.' 
+            : attributes.scheudle.map(function(sunday) {
               return el(SundayEditor, {
                 key: sunday.date,
                 value: sunday,
