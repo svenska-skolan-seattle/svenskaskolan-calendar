@@ -98,10 +98,7 @@
   var getDateParts = function(str) {
     str = str || '';
     var parts = str.split('-').map(function(s) { return parseInt(s, 10); });
-    if (str.length !== 3) {
-      console.error('Weird date passed in: ', str);
-    }
-
+    if (parts.length !== 3) console.error('Weird date passed in: ', str);
     return parts;
   }
   var strToDate = function(str) {
@@ -326,6 +323,7 @@
       var firstSunday = attributes.firstSunday;
       var lastSunday = attributes.lastSunday;
       var schedule = attributes.schedule;
+      console.log(firstSunday, lastSunday);
       if (!schedule || !schedule.length) return null;
 
       var currentDate = formatDate(new Date());
@@ -334,7 +332,6 @@
       var nextSunday = schedule.find(function(s) {
         return s.date === nextSundayDate;
       })
-
 
       return (
         el('div', {className: 'ssc-calendar-container'},
