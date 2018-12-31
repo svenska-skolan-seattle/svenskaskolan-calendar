@@ -252,6 +252,23 @@
                 })
               ),
             ),
+
+            el('div', {className: 'ssc-add-sunday-container'},
+              el(Button, {
+                isDefault: true,
+                onClick: function() {
+                  var schedule = attributes.schedule;
+                  if (schedule.length > 0) {
+                    var lastSunday = schedule[schedule.length - 1].date;
+                    var date = getDateParts(lastSunday);
+                    var nextSunday = getNextSunday(date[0], date[1], date[2] + 7);
+                    var newDate = formatDate(nextSunday);
+                    schedule.push(getSundaySchedule(newDate));
+                    props.setAttributes({schedule: schedule, lastSunday: newDate});
+                  }
+                }
+              }, 'Add Another Sunday')
+            ),
           
             el('div', {className: 'ssc-create-schedule-container'}, 
               el(Button, {
@@ -291,23 +308,6 @@
                 }
               })
             })
-          ),
-
-          el('div', {className: 'ssc-add-sunday-container'},
-            el(Button, {
-              isDefault: true,
-              onClick: function() {
-                var schedule = attributes.schedule;
-                if (schedule.length > 0) {
-                  var lastSunday = schedule[schedule.length - 1].date;
-                  var date = getDateParts(lastSunday);
-                  var nextSunday = getNextSunday(date[0], date[1], date[2] + 7);
-                  var newDate = formatDate(nextSunday);
-                  schedule.push(getSundaySchedule(newDate));
-                  props.setAttributes({schedule: schedule, lastSunday: newDate});
-                }
-              }
-            }, 'Add Next Sunday')
           )
         )
       )
