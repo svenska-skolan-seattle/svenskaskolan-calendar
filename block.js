@@ -231,48 +231,50 @@
 
       return (
         el('div', null,
-          el('div', {className: 'ssc-sunday-pickers-container'},
-            el('div', {className: 'ssc-sunday-picker-container'}, 
-              el('label', null, 'First Sunday of School Year'),
-              el(SundayPicker, {
-                value: attributes.firstSunday || getDefaultFirstSunday(),
-                onChange: function(val) {
-                  props.setAttributes({firstSunday: val})
-                }
-              })
+          el(InspectorControls, null, 
+            el('div', {className: 'ssc-sunday-pickers-container'},
+              el('div', {className: 'ssc-sunday-picker-container'}, 
+                el('label', null, 'First Sunday of School Year'),
+                el(SundayPicker, {
+                  value: attributes.firstSunday || getDefaultFirstSunday(),
+                  onChange: function(val) {
+                    props.setAttributes({firstSunday: val})
+                  }
+                })
+              ),
+              el('div', {className: 'ssc-sunday-picker-container'},
+                el('label', null, 'Last Sunday of School Year'),
+                el(SundayPicker, {
+                  value: attributes.lastSunday || getDefaultLastSunday(),
+                  onChange: function(val) {
+                    props.setAttributes({lastSunday: val})
+                  }
+                })
+              ),
             ),
-            el('div', {className: 'ssc-sunday-picker-container'},
-              el('label', null, 'Last Sunday of School Year'),
-              el(SundayPicker, {
-                value: attributes.lastSunday || getDefaultLastSunday(),
-                onChange: function(val) {
-                  props.setAttributes({lastSunday: val})
-                }
-              })
-            ),
-          ),
           
-          el('div', {className: 'ssc-create-schedule-container'}, 
-            el(Button, {
-              isDefault: true,
-              onClick: function() {
-                var schedule = updateSchedule(
-                  attributes.schedule || [],
-                  attributes.firstSunday || getDefaultFirstSunday(), 
-                  attributes.lastSunday || getDefaultLastSunday());
-                props.setAttributes({schedule: schedule});
-              }
-            }, 'Update Schedule'),
+            el('div', {className: 'ssc-create-schedule-container'}, 
+              el(Button, {
+                isDefault: true,
+                onClick: function() {
+                  var schedule = updateSchedule(
+                    attributes.schedule || [],
+                    attributes.firstSunday || getDefaultFirstSunday(), 
+                    attributes.lastSunday || getDefaultLastSunday());
+                  props.setAttributes({schedule: schedule});
+                }
+              }, 'Update Schedule'),
 
-            el(Button, {
-              isDefault: false,
-              onClick: function() {
-                var schedule = createSchedule(
-                  attributes.firstSunday || getDefaultFirstSunday(), 
-                  attributes.lastSunday || getDefaultLastSunday());
-                props.setAttributes({schedule: schedule});
-              }
-            }, 'Clear Schedule'),
+              el(Button, {
+                isDefault: false,
+                onClick: function() {
+                  var schedule = createSchedule(
+                    attributes.firstSunday || getDefaultFirstSunday(), 
+                    attributes.lastSunday || getDefaultLastSunday());
+                  props.setAttributes({schedule: schedule});
+                }
+              }, 'Clear Schedule'),
+            ),
           ),
 
           el('ul', {className: 'ssc-schedule'}, 
@@ -312,9 +314,10 @@
     },
 
     save: function(props) {
-      var firstSunday = props.attributes.firstSunday;
-      var lastSunday = props.attributes.lastSunday;
-      var schedule = props.attributes.schedule;
+      var attributes = props.attributes;
+      var firstSunday = attributes.firstSunday;
+      var lastSunday = attributes.lastSunday;
+      var schedule = attributes.schedule;
       if (!schedule || !schedule.length) return null;
 
       var currentDate = formatDate(new Date());
