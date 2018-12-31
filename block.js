@@ -96,7 +96,13 @@
     return options;
   }
   var getDateParts = function(str) {
-    return str.split('-').map(function(s) { return parseInt(s, 10); });
+    str = str || '';
+    var parts = str.split('-').map(function(s) { return parseInt(s, 10); });
+    if (str.length !== 3) {
+      console.error('Weird date passed in: ', str);
+    }
+
+    return parts;
   }
   var strToDate = function(str) {
     var p = getDateParts(str);
