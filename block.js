@@ -37,7 +37,7 @@
   var getAllSundaysInRange = function(s, e) {
     var sundays = [];
     var date = s;
-    while(date < e) {
+    while(date <= e) {
       sundays.push(formatDate(date));
       date.setDate(date.getDate() + 7);
     }
@@ -287,7 +287,7 @@
               onClick: function() {
                 var schedule = attributes.schedule;
                 if (schedule.length > 0) {
-                  var lastSunday = schedule[schedule.length - 1];
+                  var lastSunday = schedule[schedule.length - 1].date;
                   var date = getDateParts(lastSunday);
                   var nextSunday = getNextSunday(date[0], date[1], date[2]);
                   var newDate = formatDate(nextSunday);
