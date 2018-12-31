@@ -7,6 +7,7 @@
   var TextControl = components.TextControl
   var SelectControl = components.SelectControl
   var Button = components.Button
+  var CheckboxControl = components.CheckboxControl
 
   var formatYearMonthDate = function(y, m, d) {
     return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
@@ -107,7 +108,7 @@
     var m = dateparts[1];
     var d = dateparts[2];
     return (
-      el('div', null, 
+      el('div', {className: 'ssc-sunday-picker'}, 
         el(SelectControl, {
           value: String(y),
           options: getYearOptions(),
@@ -135,12 +136,20 @@
 
   var SundayEditor = function(props) {
     var value = props.value;
+    var isSchoolDay = value.isSchoolDay;
     var date = value.date;
     var time = value.time;
     var notes = value.notes;
     return (
-      el('li', null,
+      el('li', {className: 'ssc-sunday-editor'},
         el('strong', null, date),
+        el(CheckboxControl, {
+          checked: !isSchoolDay,
+          label: 'No School',
+          onChange: function(val) {
+            props.onChange(Object.assign(value, {isSchoolDay: !val}));
+          }
+        }),
         el(TextControl, {
           value: time,
           onChange: function(val) {
@@ -149,6 +158,9 @@
         }),
         el(RichText, {
           value: notes,
+          tagName: 'p',
+          placeholder: 'Additional information...',
+          keepPlaceholderOnFocus: true,
           onChange: function(val) {
             props.onChange(Object.assign(value, {notes: val}));
           }
@@ -158,13 +170,13 @@
   }
 
   var createSchedule = function(firstSunday, lastSunday) {
-    console.log('createSchedule: ', firstSunday, lastSunday);
     if (!firstSunday || !lastSunday) return [];
     var startDate = strToDate(firstSunday);
     var endDate = strToDate(lastSunday);
     var sundays = getAllSundaysInRange(startDate, endDate);
     return sundays.map(function(date) {
       return {
+        isSchoolDay: true,
         date: date,
         time: '10 - 12:30',
         notes: ''
@@ -194,8 +206,8 @@
 
       return (
         el('div', null,
-          el('div', {className: 'sunday-pickers-container'},
-            el('div', {className: 'sunday-picker-container'}, 
+          el('div', {className: 'ssc-sunday-pickers-container'},
+            el('div', {className: 'ssc-sunday-picker-container'}, 
               el('label', null, 'First Sunday of School Year'),
               el(SundayPicker, {
                 value: attributes.firstSunday || getDefaultFirstSunday(),
@@ -204,7 +216,7 @@
                 }
               })
             ),
-            el('div', {className: 'sunday-picker-container'},
+            el('div', {className: 'ssc-sunday-picker-container'},
               el('label', null, 'Last Sunday of School Year'),
               el(SundayPicker, {
                 value: attributes.lastSunday || getDefaultLastSunday(),
@@ -215,18 +227,19 @@
             ),
           ),
           
-          el(Button, {
-            isDefault: true,
-            onClick: function() {
-              var schedule = createSchedule(
-                attributes.firstSunday || getDefaultFirstSunday(), 
-                attributes.lastSunday || getDefaultLastSunday());
-              console.log(schedule);
-              props.setAttributes({schedule: schedule});
-            }
-          }, 'Create Schedule'),
+          el('div', {className: 'ssc-create-schedule-container'}, 
+            el(Button, {
+              isDefault: true,
+              onClick: function() {
+                var schedule = createSchedule(
+                  attributes.firstSunday || getDefaultFirstSunday(), 
+                  attributes.lastSunday || getDefaultLastSunday());
+                props.setAttributes({schedule: schedule});
+              }
+            }, 'Create Schedule')
+          ),
 
-          el('ul', null, 
+          el('ul', {className: 'ssc-schedule'}, 
             (attributes.schedule || []).map(function(sunday) {
               return el(SundayEditor, {
                 key: sunday.date,

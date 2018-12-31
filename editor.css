@@ -1,4 +1,18 @@
-.sunday-pickers-container {
+.ssc-sunday-pickers-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+}
+
+.ssc-create-schedule-container {
+  margin: 1rem 0;
+}
+
+.ssc-schedule {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.ssc-sunday-editor {
+  display: block;
 }
