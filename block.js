@@ -19,11 +19,12 @@
     var date = new Date(y, m - 1, d || 1);
     var weekday = date.getDay();
     if (weekday === 0) return date.getDate();
-    return 7 - weekday + date.getDate();
+    date.setDate(7 - weekday + date.getDate());
+    return date;
   }
   var getAllSundaysInMonth = function(y, m) {
     var datemonth = m - 1;
-    var date = new Date(y, datemonth, getNextSunday(y, m));
+    var date = getNextSunday(y, m);
     var sundays = [date.getDate()];
     while(date.getMonth() === datemonth) {
       date.setDate(date.getDate() + 7);
@@ -44,8 +45,8 @@
   }
   var getLastSundayInMonth = function(y, m) {
     var datemonth = m - 1;
-    var sunday = getNextSunday(y, m);
-    var date = new Date(y, datemonth, sunday);
+    var date = getNextSunday(y, m);
+    var sunday = date.getDate();
     while(date.getMonth() === datemonth) {
       date.setDate(date.getDate() + 7);
       if (date.getMonth() === datemonth) {
@@ -56,11 +57,11 @@
   }
   var getDefaultFirstSunday = function() {
     var currentYear = new Date().getFullYear()
-    return formatYearMonthDate(currentYear, 8, getNextSunday(currentYear, 8));
+    return formatDate(getNextSunday(currentYear, 8));
   }
   var getDefaultLastSunday = function() {
     var nextYear = new Date().getFullYear() + 1
-    return formatYearMonthDate(nextYear, 6, getLastSundayInMonth(nextYear, 6));
+    return formatDate(getLastSundayInMonth(nextYear, 6));
   }
   var getYearOptions = function() {
     var currentYear = new Date().getFullYear();
@@ -72,17 +73,18 @@
   }
   var getMonthOptions = function() {
     return [
-      {label: 'August', value: '8'},
-      {label: 'September', value: '9'},
-      {label: 'October', value: '10'},
-      {label: 'November', value: '11'},
-      {label: 'December', value: '12'},
       {label: 'January', value: '1'},
       {label: 'February', value: '2'},
       {label: 'March', value: '3'},
       {label: 'April', value: '4'},
       {label: 'May', value: '5'},
-      {label: 'June', value: '6'}
+      {label: 'June', value: '6'},
+      {label: 'July', value: '7'},
+      {label: 'August', value: '8'},
+      {label: 'September', value: '9'},
+      {label: 'October', value: '10'},
+      {label: 'November', value: '11'},
+      {label: 'December', value: '12'}
     ]
   }
   var getDateOptions = function(y, m) {
@@ -113,14 +115,16 @@
           value: String(y),
           options: getYearOptions(),
           onChange: function(newY) {
-            onChange(newY, m, getNextSunday(newY, m));
+            var d = getNextSunday(newY, m);
+            onChange(newY, m, d.getDate());
           }
         }),
         el(SelectControl, {
           value: String(m),
           options: getMonthOptions(),
           onChange: function(newM) {
-            onChange(y, newM, getNextSunday(y, newM));
+            var d = getNextSunday(y, newM);
+            onChange(y, newM, d.getDate());
           }
         }),
         el(SelectControl, {
@@ -169,19 +173,40 @@
     );
   }
 
+  var getSundaySchedule = function(date) {
+    return {
+      date: date,
+      time: '10 - 12:30',
+      notes: '',
+      isSchoolDay: true
+    }
+  }
+
   var createSchedule = function(firstSunday, lastSunday) {
     if (!firstSunday || !lastSunday) return [];
     var startDate = strToDate(firstSunday);
     var endDate = strToDate(lastSunday);
     var sundays = getAllSundaysInRange(startDate, endDate);
-    return sundays.map(function(date) {
-      return {
-        isSchoolDay: true,
-        date: date,
-        time: '10 - 12:30',
-        notes: ''
+    return sundays.map(getSundaySchedule);
+  }
+
+  var updateSchedule = function(oldSchedule, firstSunday, lastSunday) {
+    var newSchedule = createSchedule(firstSunday, lastSunday);
+    var n = 0;
+    var o = 0;
+
+    while(n < newSchedule.length && o < oldSchedule.length) {
+      if (newSchedule[n].date === oldSchedule[o].date) {
+        newSchedule[n] = Object.assign(newSchedule[n], oldSchedule[o]);
+        n++;
+        o++;
+      } else if (newSchedule[n].date < oldSchedule[o].date) {
+        n++;
+      } else if (newSchedule[n].date > oldSchedule[o].date) {
+        o++;
       }
-    });
+    }
+    return newSchedule;
   }
 
   registerBlockType('svenskaskolan/calendar', {
@@ -231,12 +256,13 @@
             el(Button, {
               isDefault: true,
               onClick: function() {
-                var schedule = createSchedule(
+                var schedule = updateSchedule(
+                  attributes.schedule || [],
                   attributes.firstSunday || getDefaultFirstSunday(), 
                   attributes.lastSunday || getDefaultLastSunday());
                 props.setAttributes({schedule: schedule});
               }
-            }, 'Create Schedule')
+            }, 'Update Schedule'),
           ),
 
           el('ul', {className: 'ssc-schedule'}, 
@@ -253,6 +279,23 @@
                 }
               })
             })
+          ),
+
+          el('div', {className: 'ssc-add-sunday-container'},
+            el(Button, {
+              isDefault: true,
+              onClick: function() {
+                var schedule = attributes.schedule;
+                if (schedule.length > 0) {
+                  var lastSunday = schedule[schedule.length - 1];
+                  var date = getDateParts(lastSunday);
+                  var nextSunday = getNextSunday(date[0], date[1], date[2]);
+                  var newDate = formatDate(nextSunday);
+                  schedule.push(getSundaySchedule(newDate));
+                  props.setAttributes({schedule: schedule, lastSunday: newDate});
+                }
+              }
+            }, 'Add Next Sunday')
           )
         )
       )
