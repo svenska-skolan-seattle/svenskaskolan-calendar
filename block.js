@@ -263,6 +263,16 @@
                 props.setAttributes({schedule: schedule});
               }
             }, 'Update Schedule'),
+
+            el(Button, {
+              isDefault: false,
+              onClick: function() {
+                var schedule = createSchedule(
+                  attributes.firstSunday || getDefaultFirstSunday(), 
+                  attributes.lastSunday || getDefaultLastSunday());
+                props.setAttributes({schedule: schedule});
+              }
+            }, 'Clear Schedule'),
           ),
 
           el('ul', {className: 'ssc-schedule'}, 
@@ -302,8 +312,42 @@
     },
 
     save: function(props) {
-      var attributes = props.attributes
-      return el('div', null, attributes.firstSunday + ' - ' + attributes.lastSunday);
+      var firstSunday = props.attribute.firstSunday;
+      var lastSunday = props.attribute.lastSunday;
+      var schedule = props.attributes.schedule;
+      if (!schedule || !schedule.length) return null;
+
+      var currentDate = formatDate(new Date());
+      var currentDateParts = getDateParts(currentDate);
+      var nextSundayDate = formatDate(getNextSunday(currentDateParts[0], currentDateParts[1], currentDateParts[2]));
+      var nextSunday = schedule.find(function(s) {
+        return s.date === nextSundayDate;
+      })
+
+
+      return (
+        el('div', {className: 'ssc-calendar-container'},
+          el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + getDateParts(firstSunday)[0] + '-' + getDateParts(lastSunday)[0]),
+          !!nextSunday && (
+            el('div', {className: 'ssc-calendar-this-sunday-container'},
+              el('strong', null, 'Nu på söndag:'),
+              el('p', null, nextSunday.date),
+              nextSunday.isSchoolDay && !!nextSunday.time && el('p', null, nextSunday.time),
+              nextSunday.isSchoolDay && !!nextSunday.notes && el('p', null, nextSunday.notes),
+              !nextSunday.isSchoolDay && el('p', null, 'Ingen skola.')
+            ) 
+          ),
+          el('table', null, 
+            el('tbody', null, 
+              schedule.map(function(sunday) {
+                return el('tr', {key: sunday.date}, 
+                  el('td', null, 'tbd')
+                );
+              })
+            )
+          )
+        )
+      );
     }
   });
 
