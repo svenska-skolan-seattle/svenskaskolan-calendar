@@ -157,8 +157,9 @@
     );
   }
 
-  var generateSchedule = function(firstSunday, lastSunday) {
-    if (!firstSunday || !lastSunday) return;
+  var createSchedule = function(firstSunday, lastSunday) {
+    console.log('createSchedule: ', firstSunday, lastSunday);
+    if (!firstSunday || !lastSunday) return [];
     var startDate = strToDate(firstSunday);
     var endDate = strToDate(lastSunday);
     var sundays = getAllSundaysInRange(startDate, endDate);
@@ -215,8 +216,11 @@
           ),
           
           el(Button, {
+            isDefault: true,
             onClick: function() {
-              var schedule = generateSchedule(attributes.firstSunday, attributes.lastSunday);
+              var schedule = createSchedule(
+                attributes.firstSunday || getDefaultFirstSunday(), 
+                attributes.lastSunday || getDefaultLastSunday());
               console.log(schedule);
               props.setAttributes({schedule: schedule});
             }
