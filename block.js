@@ -61,12 +61,12 @@
       {label: 'October', value: '10'},
       {label: 'November', value: '11'},
       {label: 'December', value: '12'},
-      {label: 'January', value: '1'},
-      {label: 'February', value: '2'},
-      {label: 'March', value: '3'},
-      {label: 'April', value: '4'},
-      {label: 'May', value: '5'},
-      {label: 'June', value: '6'}
+      {label: 'January', value: '01'},
+      {label: 'February', value: '02'},
+      {label: 'March', value: '03'},
+      {label: 'April', value: '04'},
+      {label: 'May', value: '05'},
+      {label: 'June', value: '06'}
     ]
   }
   var getDateOptions = function(y, m) {
@@ -93,19 +93,19 @@
           value: y,
           options: getYearOptions(),
           onChange: function(newY) {
-            onChange(newY, m, getNextSunday(newY, m));
+            onChange(newY, m, getNextSunday(newY, parseInt(m, 10)));
           }
         }),
         el(SelectControl, {
           value: m,
           options: getMonthOptions(),
           onChange: function(newM) {
-            onChange(y, newM, getNextSunday(y, newM));
+            onChange(y, newM, getNextSunday(y, parseInt(newM, 10)));
           }
         }),
         el(SelectControl, {
           value: d,
-          options: getDateOptions(y, m),
+          options: getDateOptions(y, parseInt(m, 10)),
           onChange: function(newD) {
             onChange(y, m, newD);
           }
