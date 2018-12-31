@@ -234,7 +234,7 @@
           el(InspectorControls, null, 
             el('div', {className: 'ssc-sunday-pickers-container'},
               el('div', {className: 'ssc-sunday-picker-container'}, 
-                el('label', null, 'First Sunday of School Year'),
+                el('label', {className: 'ssc-sunday-picker-label'}, 'First Sunday of School Year'),
                 el(SundayPicker, {
                   value: attributes.firstSunday || getDefaultFirstSunday(),
                   onChange: function(val) {
@@ -243,7 +243,7 @@
                 })
               ),
               el('div', {className: 'ssc-sunday-picker-container'},
-                el('label', null, 'Last Sunday of School Year'),
+                el('label', {className: 'ssc-sunday-picker-label'}, 'Last Sunday of School Year'),
                 el(SundayPicker, {
                   value: attributes.lastSunday || getDefaultLastSunday(),
                   onChange: function(val) {
@@ -297,7 +297,7 @@
           (!attributes.schedule || !attributes.schedule.length) 
             ? el('em', {className: 'ssc-no-content'}, 'Use "Block" settings to the right to generate the schedule.')
             : el('ul', {className: 'ssc-schedule'}, 
-              attributes.scheudle.map(function(sunday) {
+              attributes.schedule.map(function(sunday) {
                 return el(SundayEditor, {
                   key: sunday.date,
                   value: sunday,
