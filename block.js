@@ -5,12 +5,24 @@
   var BlockControls = wp.editor.BlockControls
   var InspectorControls = wp.editor.InspectorControls
   var TextControl = components.TextControl
+  var SelectControl = components.SelectControl
 
   var getNextSunday = function(y, m, d) {
     var date = new Date(y, m, d || 1);
     var weekday = date.getDay();
     if (weekday === 0) return date.getDate();
     return 7 - weekday + date.getDate();
+  }
+  var getAllSundaysInMonth = function(y, m) {
+    var date = new Date(y, m, getNextSunday(y, m));
+    var sundays = [date.getDate()];
+    while(date.getMonth() === m) {
+      date.setDate(date.getDate() + 7);
+      if (date.getMonth() === m) {
+        sundays.push(date.getDate());
+      }
+    }
+    return sundays;
   }
   var getLastSundayInMonth = function(y, m) {
     var sunday = getNextSunday(y, m);
@@ -23,11 +35,14 @@
     }
     return sunday;
   }
+  var formatYearMonthDate = function(y, m, d) {
+    return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+  }
   var formatDate = function(date) {
     var y = date.getFullYear();
     var m = date.getMonth() + 1;
     var d = date.getDate();
-    return y + '-' + (m < 10 ? '0' : '') + m + (d < 10 ? '0' : '') + d;
+    return formatYearMonthDate(y, m, d);
   }
   var getDefaultFirstSunday = function() {
     var currentYear = new Date().getFullYear()
@@ -37,11 +52,72 @@
     var nextYear = new Date().getFullYear() + 1
     return formatDate(new Date(nextYear, 5, getLastSundayInMonth(nextYear, 5)));
   }
+  var getYearOptions = function() {
+    var currentYear = new Date().getFullYear();
+    var years = [];
+    for(var y = currentYear - 1; y < currentYear + 6; ++y) {
+      years.push({label: String(y), value: String(y)});
+    }
+    return years;
+  }
+  var getMonthOptions = function() {
+    return [
+      {label: 'August', value: '8'},
+      {label: 'September', value: '9'},
+      {label: 'October', value: '10'},
+      {label: 'November', value: '11'},
+      {label: 'December', value: '12'},
+      {label: 'January', value: '1'},
+      {label: 'February', value: '2'},
+      {label: 'March', value: '3'},
+      {label: 'April', value: '4'},
+      {label: 'May', value: '5'},
+      {label: 'June', value: '6'}
+    ]
+  }
+  var getDateOptions = function(y, m) {
+    var sundays = getAllSundaysInMonth(y, m - 1);
+    var options = [];
+    for(var i = 0; i < sundays.length; ++i) {
+      options.push({label: String(sundays[i]), value: String(sundays[i])});
+    }
+    return options;
+  }
 
   var SundayPicker = function(props) {
     var value = props.value;
-    // var date = new Date(value);
-    return el('div', null, value);
+    var onChange = function(_y, _m, _d) {
+      props.onChange(formatYearMonthDate(_y, _m, _d));
+    }
+    var dateparts = value.split('-');
+    var y = dateparts[0];
+    var m = dateparts[1];
+    var d = dateparts[2];
+    return (
+      el('div', null, 
+        el(SelectControl, {
+          value: y,
+          options: getYearOptions(),
+          onChange: function(newY) {
+            onChange(newY, m, getNextSunday(newY, m));
+          }
+        }),
+        el(SelectControl, {
+          value: m,
+          options: getMonthOptions(),
+          onChange: function(newM) {
+            onChange(y, newM, getNextSunday(y, newM));
+          }
+        }),
+        el(SelectControl, {
+          value: m,
+          options: getDateOptions(y, m),
+          onChange: function(newD) {
+            onChange(y, m, newD);
+          }
+        })
+      )
+    );
   };
 
   registerBlockType('svenskaskolan/calendar', {
