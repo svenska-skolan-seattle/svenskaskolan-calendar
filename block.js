@@ -139,26 +139,18 @@
     var time = value.time;
     var notes = value.notes;
     return (
-      el('div', null,
+      el('li', null,
         el('strong', null, date),
         el(TextControl, {
           value: time,
           onChange: function(val) {
-            props.onChange({
-              date: date,
-              time: val,
-              notes: notes
-            })
+            props.onChange(Object.assign(value, {time: val}));
           }
         }),
         el(RichText, {
           value: notes,
           onChange: function(val) {
-            props.onChange({
-              date: date,
-              time: time,
-              notes: val
-            })
+            props.onChange(Object.assign(value, {notes: val}));
           }
         })
       )
@@ -220,14 +212,17 @@
                 }
               })
             ),
-            el(Button, {
-              onClick: function() {
-                var schedule = generateSchedule(attributes.firstSunday, attributes.lastSunday);
-                props.setAttributes({schedule: schedule});
-              }
-            }, 'Create Schedule')
           ),
-          el('div', null, 
+          
+          el(Button, {
+            onClick: function() {
+              var schedule = generateSchedule(attributes.firstSunday, attributes.lastSunday);
+              console.log(schedule);
+              props.setAttributes({schedule: schedule});
+            }
+          }, 'Create Schedule'),
+
+          el('ul', null, 
             (attributes.schedule || []).map(function(sunday) {
               return el(SundayEditor, {
                 key: sunday.date,
