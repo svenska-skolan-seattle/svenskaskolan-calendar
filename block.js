@@ -6,6 +6,7 @@
   var InspectorControls = wp.editor.InspectorControls
   var TextControl = components.TextControl
   var SelectControl = components.SelectControl
+  var Button = components.Button
 
   var getNextSunday = function(y, m, d) {
     var date = new Date(y, m - 1, d || 1);
@@ -63,12 +64,12 @@
       {label: 'October', value: '10'},
       {label: 'November', value: '11'},
       {label: 'December', value: '12'},
-      {label: 'January', value: '01'},
-      {label: 'February', value: '02'},
-      {label: 'March', value: '03'},
-      {label: 'April', value: '04'},
-      {label: 'May', value: '05'},
-      {label: 'June', value: '06'}
+      {label: 'January', value: '1'},
+      {label: 'February', value: '2'},
+      {label: 'March', value: '3'},
+      {label: 'April', value: '4'},
+      {label: 'May', value: '5'},
+      {label: 'June', value: '6'}
     ]
   }
   var getDateOptions = function(y, m) {
@@ -86,28 +87,28 @@
       props.onChange(formatYearMonthDate(_y, _m, _d));
     }
     var dateparts = value.split('-');
-    var y = dateparts[0];
-    var m = dateparts[1];
-    var d = dateparts[2];
+    var y = parseInt(dateparts[0], 10);
+    var m = parseInt(dateparts[1], 10);
+    var d = parseInt(dateparts[2], 10);
     return (
       el('div', null, 
         el(SelectControl, {
-          value: y,
+          value: String(y),
           options: getYearOptions(),
           onChange: function(newY) {
-            onChange(newY, m, getNextSunday(newY, parseInt(m, 10)));
+            onChange(newY, m, getNextSunday(newY, m));
           }
         }),
         el(SelectControl, {
-          value: m,
+          value: String(m),
           options: getMonthOptions(),
           onChange: function(newM) {
-            onChange(y, newM, getNextSunday(y, parseInt(newM, 10)));
+            onChange(y, newM, getNextSunday(y, newM));
           }
         }),
         el(SelectControl, {
-          value: d,
-          options: getDateOptions(y, parseInt(m, 10)),
+          value: String(d),
+          options: getDateOptions(y, m),
           onChange: function(newD) {
             onChange(y, m, newD);
           }
@@ -115,6 +116,10 @@
       )
     );
   };
+
+  var generateSchedule = function(firstSunday, lastSunday) {
+    if (!firstSunday || !lastSunday) return;
+  }
 
   registerBlockType('svenskaskolan/calendar', {
     title: i18n.__('Calendar'),
@@ -134,25 +139,30 @@
       var attributes = props.attributes
 
       return (
-        el('div', null, 
-          el('div', null, 
-            el('label', null, 'First Sunday of School Year'),
-            el(SundayPicker, {
-              value: attributes.firstSunday || getDefaultFirstSunday(),
-              onChange: function(val) {
-                console.log(val);
-                //props.setAttribute({firstSunday: val})
-              }
-            })
-          ),
-          el('div', null,
-            el('label', null, 'Last Sunday of School Year'),
-            el(SundayPicker, {
-              value: attributes.lastSunday || getDefaultLastSunday(),
-              onChange: function(val) {
-                console.log(val);
-                //props.setAttribute({lastSunday: val})
-              }
+        el('div', null,
+          el('div', {className: 'sunday-pickers-container'},
+            el('div', {className: 'sunday-picker-container'}, 
+              el('label', null, 'First Sunday of School Year'),
+              el(SundayPicker, {
+                value: attributes.firstSunday || getDefaultFirstSunday(),
+                onChange: function(val) {
+                  console.log(val);
+                  //props.setAttribute({firstSunday: val})
+                }
+              })
+            ),
+            el('div', {className: 'sunday-picker-container'},
+              el('label', null, 'Last Sunday of School Year'),
+              el(SundayPicker, {
+                value: attributes.lastSunday || getDefaultLastSunday(),
+                onChange: function(val) {
+                  console.log(val);
+                  //props.setAttribute({lastSunday: val})
+                }
+              })
+            ),
+            el(Button, {
+              onClick: generateSchedule(attributes.firstSunday, attributes.lastSunday)
             })
           )
         )
