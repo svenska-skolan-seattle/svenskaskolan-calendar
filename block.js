@@ -5,7 +5,21 @@
   var BlockControls = wp.editor.BlockControls
   var InspectorControls = wp.editor.InspectorControls
   var TextControl = components.TextControl
-  var DatePicker = components.DatePicker
+
+  var getNextSunday = function(y, m, d) {
+    var date = new Date(y, m, d || 1);
+    var weekday = date.getDay();
+    if (weekday === 0) return date.getDate();
+    return 7 - weekday + date.getDate();
+  }
+  var currentYear = new Date().getFullYear();
+  var SundayPicker = withState({
+    year: currentYear,
+    month: 7,
+    day: getNextSunday(currentYear, 7)
+  })(function(props) {
+    return el('div', null, year + '-' + (month + 1) + '-' + day);
+  });
 
   registerBlockType('svenskaskolan/calendar', {
     title: i18n.__('Calendar'),
@@ -13,7 +27,10 @@
     icon: 'calendar-alt',
     category: 'common',
     attributes: {
-      firstWeek: {
+      firstSunday: {
+        type: 'string'
+      },
+      lastSunday: {
         type: 'string'
       }
     },
@@ -21,19 +38,33 @@
     edit: function(props) {
       var attributes = props.attributes
 
-      return el(
-        'div', null, 
-        el(DatePicker, {
-          currentDate: attributes.firstWeek,
-          onChange: function(date) {
-            props.setAttribute({firstWeek: date.toISOString()})
-          }
-        })
-      );
+      return (
+        el('div', null, 
+          el('div', null, 
+            el('label', null, 'First Sunday of School Year'),
+            el(SundayPicker, {
+              value: attributes.firstSunday,
+              onChange: function(val) {
+                props.setAttribute({firstSunday: val})
+              }
+            })
+          ),
+          el('div', null,
+            el('label', null, 'Last Sunday of School Year'),
+            el(SundayPicker, {
+              value: attributes.lastSunday,
+              onChange: function(val) {
+                props.setAttribute({lastSunday})
+              }
+            })
+          )
+        )
+      )
     },
 
     save: function(props) {
-      return el('div', null, 'yohooooo');
+      var attributes = props.attributes
+      return el('div', null, attributes.firstSunday + ' - ' + attributes.lastSunday);
     }
   });
 
