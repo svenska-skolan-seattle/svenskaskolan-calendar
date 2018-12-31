@@ -1,10 +1,11 @@
-(function (blocks, editor, components, i18n, element) {
+(function (blocks, editor, components, i18n, element, compose) {
   var el = wp.element.createElement
   var registerBlockType = wp.blocks.registerBlockType
   var RichText = wp.editor.RichText
   var BlockControls = wp.editor.BlockControls
   var InspectorControls = wp.editor.InspectorControls
   var TextControl = components.TextControl
+  var withState = compose.withState;
 
   var getNextSunday = function(y, m, d) {
     var date = new Date(y, m, d || 1);
@@ -73,5 +74,6 @@
   window.wp.editor,
   window.wp.components,
   window.wp.i18n,
-  window.wp.element
+  window.wp.element,
+  window.wp.compose
 );
