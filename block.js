@@ -312,8 +312,8 @@
     },
 
     save: function(props) {
-      var firstSunday = props.attribute.firstSunday;
-      var lastSunday = props.attribute.lastSunday;
+      var firstSunday = props.attributes.firstSunday;
+      var lastSunday = props.attributes.lastSunday;
       var schedule = props.attributes.schedule;
       if (!schedule || !schedule.length) return null;
 
