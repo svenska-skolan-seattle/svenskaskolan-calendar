@@ -8,6 +8,12 @@
   var SelectControl = components.SelectControl
   var Button = components.Button
 
+  var formatYearMonthDate = function(y, m, d) {
+    return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
+  }
+  var formatDate = function(date) {
+    return formatYearMonthDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  }
   var getNextSunday = function(y, m, d) {
     var date = new Date(y, m - 1, d || 1);
     var weekday = date.getDay();
@@ -26,6 +32,15 @@
     }
     return sundays;
   }
+  var getAllSundaysInRange = function(s, e) {
+    var sundays = [];
+    var date = s;
+    while(date < e) {
+      sundays.push(formatDate(date));
+      date.setDate(date.getDate() + 7);
+    }
+    return sundays;
+  }
   var getLastSundayInMonth = function(y, m) {
     var datemonth = m - 1;
     var sunday = getNextSunday(y, m);
@@ -37,9 +52,6 @@
       }
     }
     return sunday;
-  }
-  var formatYearMonthDate = function(y, m, d) {
-    return y + '-' + (m < 10 ? '0' : '') + m + '-' + (d < 10 ? '0' : '') + d;
   }
   var getDefaultFirstSunday = function() {
     var currentYear = new Date().getFullYear()
@@ -80,16 +92,20 @@
     }
     return options;
   }
+  var getDateParts = function(str) {
+    return str.split('-').map(function(s) { return parseInt(s, 10); });
+  }
+  var strToDate = function(str) {
+    var p = getDateParts(str);
+    return new Date(p[0], p[1] - 1, p[2]);
+  }
 
   var SundayPicker = function(props) {
-    var value = props.value;
-    var onChange = function(_y, _m, _d) {
-      props.onChange(formatYearMonthDate(_y, _m, _d));
-    }
-    var dateparts = value.split('-');
-    var y = parseInt(dateparts[0], 10);
-    var m = parseInt(dateparts[1], 10);
-    var d = parseInt(dateparts[2], 10);
+    var onChange = function(_y, _m, _d) { props.onChange(formatYearMonthDate(_y, _m, _d)); }
+    var dateparts = getDateParts(props.value);
+    var y = dateparts[0];
+    var m = dateparts[1];
+    var d = dateparts[2];
     return (
       el('div', null, 
         el(SelectControl, {
@@ -117,8 +133,50 @@
     );
   };
 
+  var SundayEditor = function(props) {
+    var value = props.value;
+    var date = value.date;
+    var time = value.time;
+    var notes = value.notes;
+    return (
+      el('div', null,
+        el('strong', null, date),
+        el(TextControl, {
+          value: time,
+          onChange: function(val) {
+            props.onChange({
+              date: date,
+              time: val,
+              notes: notes
+            })
+          }
+        }),
+        el(RichText, {
+          value: notes,
+          onChange: function(val) {
+            props.onChange({
+              date: date,
+              time: time,
+              notes: val
+            })
+          }
+        })
+      )
+    );
+  }
+
   var generateSchedule = function(firstSunday, lastSunday) {
     if (!firstSunday || !lastSunday) return;
+    var startDate = strToDate(firstSunday);
+    var endDate = strToDate(lastSunday);
+    var sundays = getAllSundaysInRange(startDate, endDate);
+    return sundays.map(function(date) {
+      return {
+        date: date,
+        time: '10 - 12:30',
+        notes: ''
+      }
+    });
   }
 
   registerBlockType('svenskaskolan/calendar', {
@@ -132,6 +190,9 @@
       },
       lastSunday: {
         type: 'string'
+      },
+      schedule: {
+        type: 'array'
       }
     },
 
@@ -146,8 +207,7 @@
               el(SundayPicker, {
                 value: attributes.firstSunday || getDefaultFirstSunday(),
                 onChange: function(val) {
-                  console.log(val);
-                  //props.setAttribute({firstSunday: val})
+                  props.setAttributes({firstSunday: val})
                 }
               })
             ),
@@ -156,13 +216,30 @@
               el(SundayPicker, {
                 value: attributes.lastSunday || getDefaultLastSunday(),
                 onChange: function(val) {
-                  console.log(val);
-                  //props.setAttribute({lastSunday: val})
+                  props.setAttributes({lastSunday: val})
                 }
               })
             ),
             el(Button, {
-              onClick: generateSchedule(attributes.firstSunday, attributes.lastSunday)
+              onClick: function() {
+                var schedule = generateSchedule(attributes.firstSunday, attributes.lastSunday);
+                props.setAttributes({schedule: schedule});
+              }
+            }, 'Create Schedule')
+          ),
+          el('div', null, 
+            (attributes.schedule || []).map(function(sunday) {
+              return el(SundayEditor, {
+                key: sunday.date,
+                value: sunday,
+                onChange: function(newSunday) {
+                  var newSchedule = attributes.schedule.map(function(sunday) {
+                    if (sunday.date === newSunday.date) return newSunday;
+                    return sunday;
+                  })
+                  props.setAttributes({schedule: newSchedule});
+                }
+              })
             })
           )
         )
