@@ -294,22 +294,22 @@
             ),
           ),
 
-          el('ul', {className: 'ssc-schedule'}, 
-            (!attributes.schedule || !attributes.schedule.length) 
-            ? 'Use "Block" settings to the right to generate the schedule.' 
-            : attributes.scheudle.map(function(sunday) {
-              return el(SundayEditor, {
-                key: sunday.date,
-                value: sunday,
-                onChange: function(newSunday) {
-                  var newSchedule = attributes.schedule.map(function(sunday) {
-                    if (sunday.date === newSunday.date) return newSunday;
-                    return sunday;
-                  })
-                  props.setAttributes({schedule: newSchedule});
-                }
+          (!attributes.schedule || !attributes.schedule.length) 
+            ? el('em', {className: 'ssc-no-content'}, 'Use "Block" settings to the right to generate the schedule.')
+            : el('ul', {className: 'ssc-schedule'}, 
+              attributes.scheudle.map(function(sunday) {
+                return el(SundayEditor, {
+                  key: sunday.date,
+                  value: sunday,
+                  onChange: function(newSunday) {
+                    var newSchedule = attributes.schedule.map(function(sunday) {
+                      if (sunday.date === newSunday.date) return newSunday;
+                      return sunday;
+                    })
+                    props.setAttributes({schedule: newSchedule});
+                  }
+                })
               })
-            })
           )
         )
       )
