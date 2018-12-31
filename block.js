@@ -61,7 +61,7 @@
   }
   var getDefaultLastSunday = function() {
     var nextYear = new Date().getFullYear() + 1
-    return formatDate(getLastSundayInMonth(nextYear, 6));
+    return formatYearMonthDate(nextYear, 6, getLastSundayInMonth(nextYear, 6));
   }
   var getYearOptions = function() {
     var currentYear = new Date().getFullYear();
