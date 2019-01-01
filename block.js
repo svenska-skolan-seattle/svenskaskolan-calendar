@@ -471,7 +471,7 @@
         el('div', {className: 'ssc-calendar-container'},
           el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
           nextSunday,
-          el('table', null, 
+          el('table', {className: 'scc-calendar-table'}, 
             el('tbody', null, rows)
           )
         )
