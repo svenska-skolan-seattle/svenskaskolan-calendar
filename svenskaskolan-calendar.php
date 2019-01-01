@@ -16,18 +16,10 @@ Author:       Andreas McDermott
     $springYear = $lastSunday.explode("-")[0];
 
     $subtitle = "<h3>L&auml;s&aring;ret {$fallYear}-{$springYear}</h3>";
-    $thisSunday = "<div class='ssc-calendar-this-sunday-container'>" .
-      "TODO" .
-    "</div>";
-    $calendar = "<div class='ssc-calendar-container'>" . 
-      "TODO" .
-    "</div>";
+    $thisSunday = "<div class='ssc-calendar-this-sunday-container'>TODO</div>";
+    $calendar = "<div class='ssc-calendar-container'>TODO</div>";
 
-    return "<div>" .
-      "{$subtitle}" .
-      "{$thisSunday}" .
-      "{$calendar}" .
-    "</div>";
+    return "<div>{$subtitle}{$thisSunday}{$calendar}</div>";
   }
 
   function ssc_init() {
