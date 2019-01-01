@@ -51,14 +51,14 @@ Author:       Andreas McDermott
     $time = $item['time'];
     $notes = $item['notes'];
     if (!$isSchoolDay) {
-      $notes = "Ingen skola" . (isset($notes) ? " - " . $notes : "");
-      unset($time); 
+      $notes = "Ingen skola" . (!empty($notes) ? " - " . $notes : "");
+      $time = "";
     }
 
     return "<div class='ssc-this-sunday-container'>" .
       "<strong class='ssc-this-sunday-title'>Nu p&aring; s&ouml;ndag ({$date}):</strong>" .
-      (isset($time) ? "<p class='ssc-this-sunday-time'>{$time}</p>" : "") .
-      (isset($notes) ? "<p class='ssc-this-sunday-notes'>{$notes}</p>" : "") .
+      (!empty($time) ? "<p class='ssc-this-sunday-time'>{$time}</p>" : "") .
+      (!empty($notes) ? "<p class='ssc-this-sunday-notes'>{$notes}</p>" : "") .
     "</div>";
   }
 
@@ -86,8 +86,8 @@ Author:       Andreas McDermott
       $notes = $item["notes"];
       $isSchoolDay = $item["isSchoolDay"];
       if (!$isSchoolDay) {
-        unset($time);
-        $notes = "Ingen skola" . (isset($notes) ? " - " . $notes : "");
+        $notes = "Ingen skola" . (!empty($notes) ? " - " . $notes : "");
+        $time = "";
       }
       $month = $date_parts[1];
       $day = $date_parts[2];
@@ -104,8 +104,8 @@ Author:       Andreas McDermott
 
       $content .= "<div class='ssc-calendar-week'>" .
         "<span class='ssc-calendar-day'>{$day}</span>" .
-        (isset($time) ? "<span class='ssc-calendar-time'>{$time}</span>" : "") .
-        (isset($notes) ? "<span class='ssc-calendar-notes'>{$notes}</span>" : "") .
+        (!empty($time) ? "<span class='ssc-calendar-time'>{$time}</span>" : "") .
+        (!empty($notes) ? "<span class='ssc-calendar-notes'>{$notes}</span>" : "") .
       "</div>";
     }
 
