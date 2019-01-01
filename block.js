@@ -109,7 +109,7 @@
   var SundayPicker = function(props) {
     var onChange = function(_y, _m, _d) { props.onChange(formatYearMonthDate(_y, _m, _d)); }
     if (!props.value) {
-      var date = isFirst ? getDefaultFirstSunday() : getDefaultLastSunday();
+      var date = props.isFirst ? getDefaultFirstSunday() : getDefaultLastSunday();
       var parts = getDateParts(date);
       onChange(parts[0], parts[1], parts[2]);
       return null;
