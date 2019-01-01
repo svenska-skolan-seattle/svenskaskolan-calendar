@@ -165,6 +165,7 @@
             }
           }),
           isSchoolDay && el(TextControl, {
+            label: 'Time of class',
             value: time,
             onChange: function(val) {
               props.onChange(Object.assign(value, {time: val}));

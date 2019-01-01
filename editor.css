@@ -35,11 +35,13 @@
 }
 
 .ssc-sunday-editor {
+  padding: 0 0.5rem 0.5rem 0.5rem;
   display: block;
+  background: #efefef;
 }
 
 .ssc-rich-text-container {
   padding: 0.25rem;
   border-radius: 2px;
-  border: 1px solid lightgray;
+  background: #fff;
 }
