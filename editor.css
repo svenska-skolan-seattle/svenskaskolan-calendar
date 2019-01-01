@@ -24,6 +24,20 @@
   list-style-type: none;
 }
 
+.ssc-sunday-editor-row:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.ssc-sunday-editor-row:first-child > *:first-child {
+  margin-right: 1rem;
+}
+
 .ssc-sunday-editor {
   display: block;
+}
+
+.ssc-sunday-editor-row > .editor-rich-text {
+  border: 1px solid gray;
 }
