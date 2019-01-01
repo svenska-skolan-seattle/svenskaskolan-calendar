@@ -14,7 +14,8 @@
 }
 
 .ssc-schedule-cell-date {
-  text-align: center;
+  text-align: center !important;
+  width: 30px;
 }
 
 .ssc-schedule-cell-info-time,
