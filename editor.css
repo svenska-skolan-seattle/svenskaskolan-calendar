@@ -38,6 +38,8 @@
   display: block;
 }
 
-.ssc-sunday-editor-row > .editor-rich-text {
-  border: 1px solid gray;
+.ssc-rich-text-container {
+  padding: 0.5rem;
+  border-radius: 2px;
+  border: 1px solid lightgray;
 }
