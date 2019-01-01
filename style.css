@@ -1,28 +1,60 @@
-.ssc-calendar-table {
-  width: 100%;
-  height: auto; 
-  background: #fff;
+/* Calendar */
+
+.ssc-calendar-container {
+  display: flex;
 }
 
-.ssc-schedule-cell-header {
-  text-align: center; 
+.ssc-calendar-semester {
   width: 50%;
+  flex: none;
+  display: flex;
+  flex-direction: column;
 }
 
-.ssc-calendar-table td {
-  vertical-align: middle;
+.ssc-semester-title {
+  display: block;
+  font-size: 2rem;
+  text-align: center;
 }
 
-.ssc-schedule-cell-date {
-  text-align: center !important;
-  width: 7%;
+.ssc-calendar-month {
+  background: #fff;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.ssc-schedule-cell-info-time,
-.ssc-schedule-cell-info-notes,
-.ssc-schedule-cell-info-no-school {
-  padding: 0;
-  margin: 0 !important;
+.ssc-calendar-month:last-child {
+  margin-bottom: 0;
+}
+
+.ssc-month-title {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.ssc-calendar-week {
+  display: flex;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #f0f0f0
+}
+
+.ssc-calendar-week:last-child {
+  border-bottom: none;
+}
+
+.ssc-calendar-day {
+  font-weight: bold;
+  width: 20px;
+  margin-right: 1rem;
+  flex: none;
+  text-align: right;
+}
+
+.ssc-calendar-time {
+  margin-right: 1rem;
 }
 
 /* This sunday */
