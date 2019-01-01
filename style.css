@@ -61,7 +61,7 @@
 }
 
 .ssc-calendar-time {
-  width: 80px;
+  margin-right: 0.5rem;
   flex: none;
   white-space: nowrap;
 }
