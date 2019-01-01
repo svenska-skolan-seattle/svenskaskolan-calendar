@@ -99,7 +99,7 @@ Author:       Andreas McDermott
         }
         $month_name = $month_names[$month];
         $content .= "<div class='ssc-calendar-month'>" .
-          "<strong class='ssc-month-title'>{$month_name}</strong>";
+          "<strong class='ssc-month-title'>{$month} - {$month_name}</strong>";
       }
 
       $content .= "<div class='ssc-calendar-week'>" .
