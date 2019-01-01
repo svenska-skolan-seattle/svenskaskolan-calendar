@@ -12,14 +12,14 @@ Author:       Andreas McDermott
     $lastSunday = $attributes['lastSunday'];
     $schedule = $attributes['schedule'];
 
-    $fallYear = $firstSunday.explode("-")[0];
-    $springYear = $lastSunday.explode("-")[0];
+    $fallYear = explode("-", $firstSunday)[0];
+    $springYear = explode("-", $lastSunday)[0];
 
-    // $subtitle = "<h3>L&auml;s&aring;ret {$fallYear}-{$springYear}</h3>";
-    // $thisSunday = "<div class='ssc-calendar-this-sunday-container'>TODO</div>";
-    // $calendar = "<div class='ssc-calendar-container'>TODO</div>";
+    $subtitle = "<h3>L&auml;s&aring;ret {$fallYear}-{$springYear}</h3>";
+    $thisSunday = "<div class='ssc-calendar-this-sunday-container'>TODO</div>";
+    $calendar = "<div class='ssc-calendar-container'>TODO</div>";
 
-    return "HELLO";//"<div>{$subtitle}{$thisSunday}{$calendar}</div>";
+    return "<div>{$subtitle}{$thisSunday}{$calendar}</div>";
   }
 
   function ssc_init() {
