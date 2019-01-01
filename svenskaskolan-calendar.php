@@ -58,10 +58,12 @@ Author:       Andreas McDermott
       $time = "Ingen skola";
     }
 
+    $content = !empty($time) ? $time : "";
+    $content .= (!empty($content) ? " - " : "") . $notes;
+
     return "<div class='ssc-this-sunday-container'>" .
       "<strong class='ssc-this-sunday-title'>Nu p&aring; s&ouml;ndag ({$date}):</strong>" .
-      (!empty($time) ? "<p class='ssc-this-sunday-time'>{$time}</p>" : "") .
-      (!empty($notes) ? "<p class='ssc-this-sunday-notes'>{$notes}</p>" : "") .
+      "<p class='ssc-this-sunday-content'>{$content}</p>" .
     "</div>";
   }
 
