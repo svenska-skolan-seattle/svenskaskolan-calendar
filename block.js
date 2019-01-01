@@ -286,14 +286,14 @@
     var prevSm = '';
     var rows = [];
     for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
-      var fall, fp, fm, fv = true;
+      var fall = null, fp = null, fm = null, fv = true;
       if (f < fallSchedule.length) {
         fall = fallSchedule[f];
         fp = getDateParts(fall.date);
         fm = fp[1];
       } else fv = false;
 
-      var spring, sp, sm, sv = true;
+      var spring = null, sp = null, sm = null, sv = true;
       if (s < springSchedule.length) {
         spring = springSchedule[s];
         sp = getDateParts(spring.date);
