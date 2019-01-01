@@ -343,6 +343,8 @@
         rows.push(row);
       }
     }
+
+    return rows;
   }
 
   registerBlockType('svenskaskolan/calendar', {
