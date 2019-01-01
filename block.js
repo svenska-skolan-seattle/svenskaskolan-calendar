@@ -108,6 +108,12 @@
 
   var SundayPicker = function(props) {
     var onChange = function(_y, _m, _d) { props.onChange(formatYearMonthDate(_y, _m, _d)); }
+    if (!props.value) {
+      var date = isFirst ? getDefaultFirstSunday() : getDefaultLastSunday();
+      var parts = getDateParts(date);
+      onChange(parts[0], parts[1], parts[2]);
+      return null;
+    }
     var dateparts = getDateParts(props.value);
     var y = dateparts[0];
     var m = dateparts[1];
@@ -239,7 +245,8 @@
               el('div', {className: 'ssc-sunday-picker-container'}, 
                 el('label', {className: 'ssc-sunday-picker-label'}, 'First Sunday of School Year'),
                 el(SundayPicker, {
-                  value: attributes.firstSunday || getDefaultFirstSunday(),
+                  isFirst: true,
+                  value: attributes.firstSunday,
                   onChange: function(val) {
                     props.setAttributes({firstSunday: val})
                   }
@@ -248,7 +255,8 @@
               el('div', {className: 'ssc-sunday-picker-container'},
                 el('label', {className: 'ssc-sunday-picker-label'}, 'Last Sunday of School Year'),
                 el(SundayPicker, {
-                  value: attributes.lastSunday || getDefaultLastSunday(),
+                  isLast: true,
+                  value: attributes.lastSunday,
                   onChange: function(val) {
                     props.setAttributes({lastSunday: val})
                   }
@@ -278,9 +286,9 @@
                 isPrimary: true,
                 onClick: function() {
                   var schedule = updateSchedule(
-                    attributes.schedule || [],
-                    attributes.firstSunday || getDefaultFirstSunday(), 
-                    attributes.lastSunday || getDefaultLastSunday());
+                    attributes.schedule,
+                    attributes.firstSunday, 
+                    attributes.lastSunday);
                   props.setAttributes({schedule: schedule});
                 }
               }, 'Update Schedule'),
@@ -289,8 +297,8 @@
                 isDefault: true,
                 onClick: function() {
                   var schedule = createSchedule(
-                    attributes.firstSunday || getDefaultFirstSunday(), 
-                    attributes.lastSunday || getDefaultLastSunday());
+                    attributes.firstSunday, 
+                    attributes.lastSunday);
                   props.setAttributes({schedule: schedule});
                 }
               }, 'Clear Schedule'),
@@ -323,7 +331,6 @@
       var firstSunday = attributes.firstSunday;
       var lastSunday = attributes.lastSunday;
       var schedule = attributes.schedule;
-      console.log(firstSunday, lastSunday);
       if (!schedule || !schedule.length) return null;
 
       var currentDate = formatDate(new Date());
