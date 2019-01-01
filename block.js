@@ -361,7 +361,7 @@
             el('tbody', null, 
               schedule.map(function(sunday) {
                 return el('tr', {key: sunday.date}, 
-                  el('td', null, 'tbd')
+                  el('td', null, 'todo')
                 );
               })
             )
