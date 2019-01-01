@@ -1,23 +1,25 @@
-.scc-calendar-table {
+.ssc-calendar-table {
   width: 100%;
   height: auto; 
   background: #fff;
 }
 
-.scc-schedule-cell-header {
+.ssc-schedule-cell-header {
   text-align: center; 
   width: 50%;
 }
 
-.scc-calendar-table td {
+.ssc-calendar-table td {
   vertical-align: middle;
 }
 
-.scc-schedule-cell-date {
+.ssc-schedule-cell-date {
   text-align: center;
 }
 
-.scc-schedule-cell-info p {
+.ssc-schedule-cell-info-time,
+.ssc-schedule-cell-info-notes,
+.ssc-schedule-cell-info-no-school {
   padding: 0;
   margin: 0;
 }

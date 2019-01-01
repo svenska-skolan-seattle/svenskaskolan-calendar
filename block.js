@@ -260,33 +260,33 @@
   }
 
   var getHeaderCell = function(dateParts) {
-    return el('th', {className: 'scc-schedule-cell-header', colSpan: 2}, 
+    return el('th', {className: 'ssc-schedule-cell-header', colSpan: 2}, 
       getMonthName(dateParts[1]) + ' ' + dateParts[0]
     )
   }
 
   var getEmptyCell = function() {
-    return el('td', {className: 'scc-schedule-cell-empty', colSpan: 2})
+    return el('td', {className: 'ssc-schedule-cell-empty', colSpan: 2})
   }
 
   var getDateCell = function(dateParts) {
-    return el('td', {className: 'scc-schedule-cell-date'}, dateParts[2])
+    return el('td', {className: 'ssc-schedule-cell-date'}, dateParts[2])
   }
 
   var getInfoCell = function(sunday) {
-    return el('td', {className: 'scc-schedule-cell-info'}, [
+    return el('td', {className: 'ssc-schedule-cell-info'}, [
         !!sunday.notes && el('p', {
           key: 'notes',
-          className: 'scc-schedule-cell-info-notes', 
+          className: 'ssc-schedule-cell-info-notes', 
           dangerouslySetInnerHTML: {__html: sunday.notes}
         }),
         sunday.isSchoolDay && !!sunday.time && el('p', {
           key: 'time',
-          className: 'scc-schedule-info-time',
+          className: 'ssc-schedule-info-time',
         }, sunday.time),
         !sunday.isSchoolDay && el('p', {
           key: 'no-school',
-          className: 'scc-schedule-info-no-school'
+          className: 'ssc-schedule-info-no-school'
         }, 'Ingen skola')
       ])
   }
@@ -312,7 +312,7 @@
 
       var row = null;
       if (prevFm === fm && prevSm === sm) {
-        row = el('tr', {className: 'scc-schedule-row'}, 
+        row = el('tr', {className: 'ssc-schedule-row'}, 
           getDateCell(fp),
           getInfoCell(fall),
           getDateCell(sp),
@@ -321,21 +321,21 @@
         s++;
         f++;
       } else if ((!fv || prevFm !== fm) && (!sv || prevSm !== sm)) {
-        row = el('tr', {className: 'scc-schedule-row'}, 
+        row = el('tr', {className: 'ssc-schedule-row'}, 
           fv ? getHeaderCell(fp) : getEmptyCell(),
           sv ? getHeaderCell(sp) : getEmptyCell()
         )
         if (fv) prevFm = fm;
         if (sv) prevSm = sm;
       } else if (prevFm === fm && prevSm !== sm) {
-        row = el('tr', {className: 'scc-schedule-row'},
+        row = el('tr', {className: 'ssc-schedule-row'},
           getDateCell(fp),
           getInfoCell(fall),
           getEmptyCell()
         )
         f++;
       } else if (prevFm !== fm && prevSm === sm) {
-        row = el('tr', {className: 'scc-schedule-row'},
+        row = el('tr', {className: 'ssc-schedule-row'},
           getEmptyCell(),
           getDateCell(sp),
           getInfoCell(spring)
@@ -478,7 +478,7 @@
         el('div', {className: 'ssc-calendar-container'},
           el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
           nextSunday,
-          el('table', {className: 'scc-calendar-table'}, 
+          el('table', {className: 'ssc-calendar-table'}, 
             el('tbody', null, rows)
           )
         )
