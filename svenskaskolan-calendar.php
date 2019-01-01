@@ -55,15 +55,14 @@ Author:       Andreas McDermott
     $time = $item['time'];
     $notes = $item['notes'];
     if (!$isSchoolDay) {
-      $time = "Ingen skola";
+      $time = "";
+      $notes = "Ingen skola" . (!empty($notes) ? " - {$notes}" : "");
     }
-
-    $content = !empty($time) ? $time : "";
-    $content .= (!empty($content) ? " - " : "") . $notes;
 
     return "<div class='ssc-this-sunday-container'>" .
       "<strong class='ssc-this-sunday-title'>Nu p&aring; s&ouml;ndag ({$date}):</strong>" .
-      "<p class='ssc-this-sunday-content'>{$content}</p>" .
+      (!empty($time) ? "<p class='ssc-this-sunday-time'>{$time}</p>" : "") .
+      (!empty($notes) ? "<p class='ssc-this-sunday-notes'>{$notes}</p>" : "") .
     "</div>";
   }
 
