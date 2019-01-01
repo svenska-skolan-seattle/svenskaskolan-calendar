@@ -1,0 +1,17 @@
+.scc-calendar-table {
+  width: 100%;
+  height: auto; 
+  background: #fff;
+}
+
+.scc-calendar-table th {
+  text-align: center; width: 50%;
+}
+
+.scc-calendar-table td {
+  vertical-align: middle;
+}
+
+.scc-calendar-table td:nth-child(odd) {
+  text-align: center;
+}

@@ -254,13 +254,13 @@
         el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
         nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
         !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
-        !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola.')
+        !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola')
       ) 
     )
   }
 
   var getHeaderCell = function(dateParts) {
-    return el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
+    return el('th', {className: 'scc-schedule-cell-header', colSpan: 2}, 
       getMonthName(dateParts[1]) + ' ' + dateParts[0]
     )
   }
@@ -274,14 +274,21 @@
   }
 
   var getInfoCell = function(sunday) {
-    return el('td', {className: 'scc-schedule-cell-info'}, 
+    return el('td', {className: 'scc-schedule-cell-info'}, [
         !!sunday.notes && el('p', {
+          key: 'notes',
           className: 'scc-schedule-cell-info-notes', 
           dangerouslySetInnerHTML: {__html: sunday.notes}
         }),
-        sunday.isSchoolDay && !!sunday.time && el('p', {className: 'scc-schedule-info-time'}, sunday.time),
-        !sunday.isSchoolDay && el('p', {className: 'scc-schedule-info-no-school'}, 'Ingen skola.')
-      )
+        sunday.isSchoolDay && !!sunday.time && el('p', {
+          key: 'time',
+          className: 'scc-schedule-info-time',
+        }, sunday.time),
+        !sunday.isSchoolDay && el('p', {
+          key: 'no-school',
+          className: 'scc-schedule-info-no-school'
+        }, 'Ingen skola')
+      ])
   }
 
   var getScheduleRows = function(fallSchedule, springSchedule) {
