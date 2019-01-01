@@ -31,7 +31,7 @@ Author:       Andreas McDermott
   }
 
   function ssc_render_this_sunday($attributes, $content) {
-    $nextSunday = today_is_weekday() 
+    $nextSunday = today_is_sunday() 
       ? format_date(getdate())
       : format_date(getdate(strtotime('next sunday')));
     $schedule = $attributes['schedule'];
