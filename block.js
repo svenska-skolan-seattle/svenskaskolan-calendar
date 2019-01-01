@@ -200,6 +200,7 @@
   }
 
   var updateSchedule = function(oldSchedule, firstSunday, lastSunday) {
+    oldSchedule = oldSchedule || [];
     var newSchedule = createSchedule(firstSunday, lastSunday);
     var n = 0;
     var o = 0;
