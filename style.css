@@ -25,16 +25,17 @@
   margin: 0 !important;
 }
 
-.ssc-calendar-this-sunday-container {
+/* This sunday */
+
+.ssc-this-sunday-container {
   padding: 0.5rem;
   background: #f0f0f0;
   border-left: 4px solid #2A5EC0;
   margin-bottom: 1rem;
 }
 
-.ssc-calendar-time,
-.ssc-calendar-notes,
-.ssc-calendar-no-school {
+.ssc-this-sunday-time,
+.ssc-this-sunday-notes {
   margin: 0 !important;
   padding: 0;
 }
