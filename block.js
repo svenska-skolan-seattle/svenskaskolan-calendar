@@ -356,17 +356,6 @@
     description: i18n.__('A custom block for displaying school calendar.'),
     icon: 'calendar-alt',
     category: 'common',
-    attributes: {
-      firstSunday: {
-        type: 'string'
-      },
-      lastSunday: {
-        type: 'string'
-      },
-      schedule: {
-        type: 'array'
-      }
-    },
 
     edit: function(props) {
       var attributes = props.attributes
@@ -460,29 +449,30 @@
     },
 
     save: function(props) {
-      var attributes = props.attributes;
-      var firstSunday = attributes.firstSunday;
-      var lastSunday = attributes.lastSunday;
-      var schedule = attributes.schedule;
-      if (!schedule || !schedule.length) return null;
+      // var attributes = props.attributes;
+      // var firstSunday = attributes.firstSunday;
+      // var lastSunday = attributes.lastSunday;
+      // var schedule = attributes.schedule;
+      // if (!schedule || !schedule.length) return null;
 
-      var fallYear = getDateParts(firstSunday)[0];
-      var springYear = getDateParts(lastSunday)[0];
+      // var fallYear = getDateParts(firstSunday)[0];
+      // var springYear = getDateParts(lastSunday)[0];
 
-      var nextSunday = getScheduleForUpcomingSunday(schedule);
-      var rows = getScheduleRows(
-        schedule.filter(function(s) { return s.date.indexOf(fallYear) === 0 }),
-        schedule.filter(function(s) { return s.date.indexOf(springYear) === 0 }));
+      // var nextSunday = getScheduleForUpcomingSunday(schedule);
+      // var rows = getScheduleRows(
+      //   schedule.filter(function(s) { return s.date.indexOf(fallYear) === 0 }),
+      //   schedule.filter(function(s) { return s.date.indexOf(springYear) === 0 }));
       
-      return (
-        el('div', {className: 'ssc-calendar-container'},
-          el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
-          nextSunday,
-          el('table', {className: 'ssc-calendar-table'}, 
-            el('tbody', null, rows)
-          )
-        )
-      );
+      // return (
+      //   el('div', {className: 'ssc-calendar-container'},
+      //     el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
+      //     nextSunday,
+      //     el('table', {className: 'ssc-calendar-table'}, 
+      //       el('tbody', null, rows)
+      //     )
+      //   )
+      // );
+      return null;
     }
   });
 

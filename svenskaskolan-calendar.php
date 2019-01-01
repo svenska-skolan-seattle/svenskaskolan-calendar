@@ -2,10 +2,18 @@
 /*
 Plugin Name:  SvenskaSkolan-Calendar
 Description:  Render svenska skolan's class calendar
-Version:      20181231
+Version:      20190101
 Author:       Andreas McDermott
 */
   defined( 'ABSPATH' ) or exit;
+
+  function ssc_render_block($attributes, $content) {
+    $firstSunday = $attributes['firstSunday'];
+    $lastSunday = $attributes['lastSunday'];
+    $schedule = $attributes['schedule'];
+
+    return $firstSunday . " - " . $lastSunday;
+  }
 
   function ssc_init() {
     if (!function_exists('register_block_type')) return;
@@ -31,11 +39,25 @@ Author:       Andreas McDermott
       filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
     );
 
-    register_block_type( 'svenskaskolan/calendar', array(
-      'editor_script' => 'ssc-script',
-      'editor_style'  => 'ssc-editor-style',
-      'style'         => 'ssc-frontend-style',
-    ) );
+    register_block_type('svenskaskolan/calendar', 
+      array(
+        'editor_script'   => 'ssc-script',
+        'editor_style'    => 'ssc-editor-style',
+        'style'           => 'ssc-frontend-style',
+        'attributes'      => array(
+          'firstSunday' => array(
+            'type' => 'string'
+          ),
+          'lastSunday' => array(
+            'type' => 'string'
+          ),
+          'schedule' => array(
+            'type' => 'array'
+          )
+        ),
+        'render_callback' => 'ssc_render_block',
+      )
+    );
   }
 
   add_action('init', 'ssc_init');
