@@ -237,6 +237,7 @@
 
     edit: function(props) {
       var attributes = props.attributes
+      console.log(attributes.firstSunday, attributes.lastSunday);
 
       return (
         el('div', null,
