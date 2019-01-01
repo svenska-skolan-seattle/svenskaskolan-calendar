@@ -57,7 +57,7 @@
   }
   var getDefaultFirstSunday = function() {
     var currentYear = new Date().getFullYear()
-    return formatDate(getNextSunday(currentYear, 8));
+    return formatDate(getNextSunday(currentYear, 9));
   }
   var getDefaultLastSunday = function() {
     var nextYear = new Date().getFullYear() + 1
@@ -288,7 +288,6 @@
     var prevFm = '';
     var prevSm = '';
     var rows = [];
-    debugger;
     for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
       var fall, fp, fm;
       if (f < fallSchedule.length) {
