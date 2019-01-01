@@ -284,13 +284,11 @@
       ) 
   }
 
-  var getScheduleRows = function(schedule, fallYear, springYear) {
-    var fallSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === fallYear});
-    var springSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === springYear});
-
+  var getScheduleRows = function(fallSchedule, springSchedule) {
     var prevFm = '';
     var prevSm = '';
     var rows = [];
+    debugger;
     for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
       var fall, fp, fm;
       if (f < fallSchedule.length) {
@@ -466,7 +464,9 @@
       var springYear = getDateParts(lastSunday)[0];
 
       var nextSunday = getScheduleForUpcomingSunday(schedule);
-      var rows = [];//getScheduleRows(schedule, fallYear, springYear);
+      var rows = getScheduleRows(
+        schedule.filter(function(s) { return s.date.indexOf(fallYear) === 0 }),
+        schedule.filter(function(s) { return s.date.indexOf(springYear) === 0 }));
       
       return (
         el('div', {className: 'ssc-calendar-container'},
