@@ -30,8 +30,8 @@
   justify-content: flex-start;
 }
 
-.ssc-sunday-editor-row > *:first-child {
-  margin-right: 1rem;
+.ssc-sunday-editor-row > * {
+  margin-right: 0.5rem;
 }
 
 .ssc-sunday-editor {
@@ -39,7 +39,7 @@
 }
 
 .ssc-rich-text-container {
-  padding: 0.5rem;
+  padding: 0.25rem;
   border-radius: 2px;
   border: 1px solid lightgray;
 }
