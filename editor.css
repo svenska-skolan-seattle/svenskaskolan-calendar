@@ -35,9 +35,9 @@
 }
 
 .ssc-sunday-editor {
-  padding: 0 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem;
   display: block;
-  background: #efefef;
+  background: #f0f0f0;
 }
 
 .ssc-rich-text-container {
