@@ -52,7 +52,7 @@ Author:       Andreas McDermott
     $notes = $item['notes'];
     if (!$isSchoolDay) {
       $notes = "Ingen skola" . (isset($notes) ? " - " . $notes : "");
-      unset($time);
+      unset($time); 
     }
 
     return "<div class='ssc-this-sunday-container'>" .
@@ -62,8 +62,82 @@ Author:       Andreas McDermott
     "</div>";
   }
 
+  $months_names = array(
+    "01" => "Januari",
+    "02" => "Februari",
+    "03" => "Mars",
+    "04" => "April",
+    "05" => "Maj",
+    "06" => "Juni",
+    "07" => "Juli",
+    "08" => "Augusti",
+    "09" => "September",
+    "10" => "Oktober",
+    "11" => "November",
+    "12" => "December"
+  );
+
+  function ssc_render_semester($year, $schedule) {
+    $curr_month = '';
+    $content = '';
+    foreach($schedule as $item) {
+      $date_parts = explode("-", $item["date"]);
+      $time = $item["time"];
+      $notes = $item["notes"];
+      $isSchoolDay = $item["isSchoolDay"];
+      if (!$isSchoolDay) {
+        unset($time);
+        $notes = "Ingen skola" . (isset($notes) ? " - " . $notes : "");
+      }
+      $month = $date_parts[1];
+      $day = $date_parts[2];
+
+      if ($month != $curr_month) {
+        $curr_month = $months;
+        if ($content != "") {
+          $content .= '</div>';
+        }
+        $month_name = $month_names[$month];
+        $content .= "<div class='ssc-calendar-month'>" .
+          "<strong class='ssc-month-title'>{$month_name}</strong>";
+      }
+
+      $content .= "<div class='ssc-calendar-week'>" .
+        "<span class='ssc-calendar-day'>{$day}</span>" .
+        (isset($time) ? "<span class='ssc-calendar-time'>{$time}</span>" : "") .
+        (isset($notes) ? "<span class='ssc-calendar-notes'>{$notes}</span>" : "") .
+      "</div>";
+    }
+
+    if ($content != "") {
+      $content .= "</div>";
+    }
+
+    return "<div class='ssc-calendar-semester'>" .
+        "<strong class='ssc-semester-title'>{$year}</strong>" . 
+        $content .
+      "</div>";
+  }
+
   function ssc_render_calendar($attributes, $content) {
-    return "<div class='ssc-calendar-container'>TODO</div>";
+    $firstSunday = $attributes['firstSunday'];
+    $lastSunday = $attributes['lastSunday'];
+    $fallYear = explode("-", $firstSunday)[0];
+    $springYear = explode("-", $lastSunday)[0];
+
+    $schedule = $attributes['schedule'];
+
+    $fall_schedule = array_filter($schedule, function($item) {
+      return strpos($item['date'], $fallYear) == 0;
+    });
+    $spring_schedule = array_filter($schedule, function($item) {
+      return strpos($item['date'], $springYear) == 0;
+    });
+
+    $fall = ssc_render_semester($fallYear, $fall_schedule);
+    $spring = ssc_render_semester($springYear, $spring_schedule);
+
+    return "<div class='ssc-calendar-container'>{$fall}{$spring}</div>";
   }
 
   function ssc_render_block($attributes, $content) {
