@@ -172,7 +172,7 @@
             }
           }),
         ),
-        isSchoolDay && el('div', {className: 'ssc-rich-text-container'}, 
+        el('div', {className: 'ssc-rich-text-container'}, 
           el(RichText, {
             value: notes,
             tagName: 'p',
@@ -253,7 +253,7 @@
       el('div', {className: 'ssc-calendar-this-sunday-container'},
         el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
         nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
-        nextSunday.isSchoolDay && !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
+        !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
         !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola.')
       ) 
     )
@@ -274,14 +274,11 @@
   }
 
   var getInfoCell = function(sunday) {
-    return sunday.isSchoolDay 
-      ? el('td', {className: 'scc-schedule-cell-info'}, 
-        sunday.notes,
-        sunday.time
-      ) 
-      : el('td', {className: 'scc-schedule-cell-info'},
-        'Ingen skola.'
-      ) 
+    return el('td', {className: 'scc-schedule-cell-info'}, 
+        !!sunday.notes && sunday.notes,
+        sunday.isSchoolDay && !!sunday.time && sunday.time,
+        !sunday.isSchoolDay && 'Ingen skola.'
+      )
   }
 
   var getScheduleRows = function(fallSchedule, springSchedule) {
