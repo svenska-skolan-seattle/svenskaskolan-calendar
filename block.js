@@ -295,14 +295,14 @@
         fall = fallSchedule[f];
         fp = getDateParts(fall.date);
         fm = fp[1];
-      }
+      } else fm = null;
 
       var spring, sp, sm;
       if (s < springSchedule.length) {
         spring = springSchedule[s];
         sp = getDateParts(spring.date);
         sm = sp[1];
-      }
+      } else sm = null;
 
       var row = null;
       if (prevFm === fm && prevSm === sm) {
