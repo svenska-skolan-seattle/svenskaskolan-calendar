@@ -289,19 +289,19 @@
     var prevSm = '';
     var rows = [];
     for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
-      var fall, fp, fm;
+      var fall, fp, fm, fv = true;
       if (f < fallSchedule.length) {
         fall = fallSchedule[f];
         fp = getDateParts(fall.date);
         fm = fp[1];
-      } else fm = null;
+      } else fv = false;
 
-      var spring, sp, sm;
+      var spring, sp, sm, sv = true;
       if (s < springSchedule.length) {
         spring = springSchedule[s];
         sp = getDateParts(spring.date);
         sm = sp[1];
-      } else sm = null;
+      } else sv = false;
 
       var row = null;
       if (prevFm === fm && prevSm === sm) {
@@ -313,13 +313,13 @@
         )
         s++;
         f++;
-      } else if (prevFm !== fm && prevSm !== sm) {
+      } else if ((!fv || prevFm !== fm) && (!sv || prevSm !== sm)) {
         row = el('tr', {className: 'scc-schedule-row'}, 
-          getHeaderCell(fp),
-          getHeaderCell(sp)
+          fv ? getHeaderCell(fp) : getEmptyCell(),
+          sv ? getHeaderCell(sp) : getEmptyCell()
         )
-        prevFm = fm;
-        prevSm = sm;
+        if (fv) prevFm = fm;
+        if (sv) prevSm = sm;
       } else if (prevFm === fm && prevSm !== sm) {
         row = el('tr', {className: 'scc-schedule-row'},
           getDateCell(fp),
