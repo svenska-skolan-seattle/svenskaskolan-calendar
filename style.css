@@ -61,7 +61,9 @@
 }
 
 .ssc-calendar-time {
-  margin-right: 1rem;
+  width: 60px;
+  flex: none;
+  white-space: nowrap;
 }
 
 /* This sunday */
