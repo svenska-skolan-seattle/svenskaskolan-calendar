@@ -275,9 +275,12 @@
 
   var getInfoCell = function(sunday) {
     return el('td', {className: 'scc-schedule-cell-info'}, 
-        !!sunday.notes && sunday.notes,
-        sunday.isSchoolDay && !!sunday.time && sunday.time,
-        !sunday.isSchoolDay && 'Ingen skola.'
+        !!sunday.notes && el('p', {
+          className: 'scc-schedule-cell-info-notes', 
+          dangerouslySetInnerHtml: {__html: sunday.notes}
+        }),
+        sunday.isSchoolDay && !!sunday.time && el('p', {className: 'scc-schedule-info-time'}, sunday.time),
+        !sunday.isSchoolDay && el('p', {className: 'scc-schedule-info-no-school'}, 'Ingen skola.')
       )
   }
 
