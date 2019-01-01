@@ -129,12 +129,15 @@ Author:       Andreas McDermott
 
     $schedule = $attributes["schedule"];
 
-    $fall_schedule = array_filter($schedule, function($item) {
-      return strpos($item["date"], $fallYear) !== false;
-    });
-    $spring_schedule = array_filter($schedule, function($item) {
-      return strpos($item["date"], $springYear) !== false;
-    });
+    $fall_schedule = [];
+    $spring_schedule = [];
+    foreach($schedule as $item) {
+      if (strpos($item["date"], $fallYear) !== false) {
+        array_push($fall_schedule, $item);
+      } else if (strpos($item["date"], $springYear) !== false) {
+        array_push($spring_schedule, $item);
+      }
+    }
 
     $fall = ssc_render_semester($fallYear, $fall_schedule);
     $spring = ssc_render_semester($springYear, $spring_schedule);
