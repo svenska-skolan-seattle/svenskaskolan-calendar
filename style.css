@@ -15,7 +15,7 @@
 
 .ssc-schedule-cell-date {
   text-align: center !important;
-  width: 30px;
+  width: 7%;
 }
 
 .ssc-schedule-cell-info-time,
@@ -23,4 +23,18 @@
 .ssc-schedule-cell-info-no-school {
   padding: 0;
   margin: 0 !important;
+}
+
+.ssc-calendar-this-sunday-container {
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-left: 4px solid #2A5EC0;
+  margin-bottom: 1rem;
+}
+
+.ssc-calendar-time,
+.ssc-calendar-notes,
+.ssc-calendar-no-school {
+  margin: 0 !important;
+  padding: 0;
 }
