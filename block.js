@@ -171,18 +171,16 @@
             }
           }),
         ),
-        isSchoolDay && el('div', {className: 'ssc-sunday-editor-row'},
-          el('div', {className: 'ssc-rich-text-container'}, 
-            el(RichText, {
-              value: notes,
-              tagName: 'p',
-              placeholder: 'Optional notes. Can include links.',
-              keepPlaceholderOnFocus: true,
-              onChange: function(val) {
-                props.onChange(Object.assign(value, {notes: val}));
-              }
-            })
-          )
+        isSchoolDay && el('div', {className: 'ssc-rich-text-container'}, 
+          el(RichText, {
+            value: notes,
+            tagName: 'p',
+            placeholder: 'Optional notes. Can include links.',
+            keepPlaceholderOnFocus: true,
+            onChange: function(val) {
+              props.onChange(Object.assign(value, {notes: val}));
+            }
+          })
         )
       )
     );
