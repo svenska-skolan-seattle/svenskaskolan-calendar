@@ -91,4 +91,8 @@
   .ssc-calendar-semester {
     width: 100%;
   }
+
+  .ssc-calendar-semester:last-child {
+    padding-top: 2rem;
+  }
 }

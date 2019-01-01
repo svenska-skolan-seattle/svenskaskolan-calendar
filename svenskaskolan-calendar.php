@@ -55,8 +55,7 @@ Author:       Andreas McDermott
     $time = $item['time'];
     $notes = $item['notes'];
     if (!$isSchoolDay) {
-      $notes = "Ingen skola" . (!empty($notes) ? " - " . $notes : "");
-      $time = "";
+      $time = "Ingen skola";
     }
 
     return "<div class='ssc-this-sunday-container'>" .
@@ -93,8 +92,7 @@ Author:       Andreas McDermott
       $notes = $item["notes"];
       $isSchoolDay = $item["isSchoolDay"];
       if (!$isSchoolDay) {
-        $notes = "Ingen skola" . (!empty($notes) ? " - " . $notes : "");
-        $time = "";
+        $time = "Ingen skola";
       }
       $month = $date_parts[1];
       $day = $date_parts[2];
