@@ -81,3 +81,14 @@
   margin: 0 !important;
   padding: 0;
 }
+
+@media (max-width: 499px) {
+  .ssc-calendar-container {
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  .ssc-calendar-semester {
+    width: 100%;
+  }
+}
