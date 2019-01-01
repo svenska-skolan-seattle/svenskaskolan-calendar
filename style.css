@@ -2,10 +2,11 @@
 
 .ssc-calendar-container {
   display: flex;
+  justify-content: space-between;
 }
 
 .ssc-calendar-semester {
-  width: 50%;
+  width: 45%;
   flex: none;
   display: flex;
   flex-direction: column;
