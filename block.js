@@ -323,8 +323,6 @@
         )
         prevFm = fm;
         prevSm = sm;
-        s++;
-        f++;
       } else if (prevFm === fm && prevSm !== sm) {
         row = el('tr', {className: 'scc-schedule-row'},
           getDateCell(fp),
