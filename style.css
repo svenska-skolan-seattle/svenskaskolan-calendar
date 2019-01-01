@@ -76,7 +76,8 @@
   margin-bottom: 1rem;
 }
 
-.ssc-this-sunday-content {
+.ssc-this-sunday-time,
+.ssc-this-sunday-notes {
   margin: 0 !important;
   padding: 0;
 }
