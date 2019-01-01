@@ -76,6 +76,11 @@
   margin-bottom: 1rem;
 }
 
+.ssc-this-sunday-title {
+  display: block;
+  padding-bottom: 0.25rem;
+}
+
 .ssc-this-sunday-time,
 .ssc-this-sunday-notes {
   margin: 0 !important;
