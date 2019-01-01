@@ -93,7 +93,7 @@ Author:       Andreas McDermott
       $day = $date_parts[2];
 
       if ($month != $curr_month) {
-        $curr_month = $months;
+        $curr_month = $month;
         if ($content != "") {
           $content .= '</div>';
         }
