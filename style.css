@@ -25,7 +25,7 @@
   margin-bottom: 1rem;
   border-radius: 4px;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
-  border-top: 3px solid #275bc4;
+  border-top: 2px solid #275bc4;
 }
 
 .ssc-calendar-month:last-child {
@@ -46,6 +46,10 @@
 
 .ssc-calendar-week:last-child {
   border-bottom: none;
+}
+
+.ssc-week-current {
+  background: skyblue;
 }
 
 .ssc-calendar-day {

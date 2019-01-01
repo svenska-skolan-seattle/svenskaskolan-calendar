@@ -20,6 +20,12 @@ Author:       Andreas McDermott
     return $weekday == 0;
   }
 
+  function ssc_get_next_sunday() {
+    return today_is_sunday() 
+      ? format_date(getdate())
+      : format_date(getdate(strtotime("next sunday")));
+  }
+
   function ssc_render_subtitle($attributes, $content) {
     $firstSunday = $attributes['firstSunday'];
     $lastSunday = $attributes['lastSunday'];
@@ -31,9 +37,7 @@ Author:       Andreas McDermott
   }
 
   function ssc_render_this_sunday($attributes, $content) {
-    $nextSunday = today_is_sunday() 
-      ? format_date(getdate())
-      : format_date(getdate(strtotime('next sunday')));
+    $nextSunday = ssc_get_next_sunday();
     $schedule = $attributes['schedule'];
 
     $item = null;
@@ -44,7 +48,7 @@ Author:       Andreas McDermott
       }
     }
 
-    if ($item == null) return "";
+    if (empty($item)) return "";
 
     $date = $item['date'];
     $isSchoolDay = $item['isSchoolDay'];
@@ -80,6 +84,7 @@ Author:       Andreas McDermott
   }
 
   function ssc_render_semester($year, $schedule) {
+    $next_sunday = ssc_get_next_sunday();
     $curr_month = '';
     $content = '';
     foreach($schedule as $item) {
@@ -104,7 +109,10 @@ Author:       Andreas McDermott
           "<strong class='ssc-month-title'>{$month_name}</strong>";
       }
 
-      $content .= "<div class='ssc-calendar-week'>" .
+      $is_upcoming = $item["date"] == $next_sunday;
+      $extra_css = $is_upcoming ? "ssc-week-current" : "";
+
+      $content .= "<div class='ssc-calendar-week {$extra_css}'>" .
         "<span class='ssc-calendar-day'>{$day}</span>" .
         (!empty($time) ? "<span class='ssc-calendar-time'>{$time}</span>" : "") .
         (!empty($notes) ? "<span class='ssc-calendar-notes'>{$notes}</span>" : "") .
