@@ -444,13 +444,7 @@
             ) 
           ),
           el('table', null, 
-            el('tbody', null, 
-              schedule.map(function(sunday) {
-                return el('tr', {key: sunday.date}, 
-                  el('td', null, 'todo')
-                );
-              })
-            )
+            el('tbody', null, rows)
           )
         )
       );
