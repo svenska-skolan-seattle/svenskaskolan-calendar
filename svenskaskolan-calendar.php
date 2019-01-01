@@ -52,6 +52,7 @@ Author:       Andreas McDermott
     $notes = $item['notes'];
     if (!$isSchoolDay) {
       $notes = "Ingen skola" . (isset($notes) ? " - " . $notes : "");
+      unset($time);
     }
 
     return "<div class='ssc-this-sunday-container'>" .
