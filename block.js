@@ -156,28 +156,31 @@
     return (
       el('li', {className: 'ssc-sunday-editor'},
         el('strong', null, date),
-        el(CheckboxControl, {
-          checked: !isSchoolDay,
-          label: 'No School',
-          onChange: function(val) {
-            props.onChange(Object.assign(value, {isSchoolDay: !val}));
-          }
-        }),
-        el(TextControl, {
-          value: time,
-          onChange: function(val) {
-            props.onChange(Object.assign(value, {time: val}));
-          }
-        }),
-        el(RichText, {
-          value: notes,
-          tagName: 'p',
-          placeholder: 'Additional information...',
-          keepPlaceholderOnFocus: true,
-          onChange: function(val) {
-            props.onChange(Object.assign(value, {notes: val}));
-          }
-        })
+        el('div', {className: 'ssc-sunday-editor-row'}, 
+          el(CheckboxControl, {
+            checked: !isSchoolDay,
+            label: 'No School',
+            onChange: function(val) {
+              props.onChange(Object.assign(value, {isSchoolDay: !val}));
+            }
+          }),
+          isSchoolDay && el(TextControl, {
+            value: time,
+            onChange: function(val) {
+              props.onChange(Object.assign(value, {time: val}));
+            }
+          }),
+        ),
+        isSchoolDay && el('div', {className: 'ssc-sunday-editor-row'},
+          el('label', null, 'Additional information: '),
+          el(RichText, {
+            value: notes,
+            tagName: 'p',
+            onChange: function(val) {
+              props.onChange(Object.assign(value, {notes: val}));
+            }
+          })
+        )
       )
     );
   }
@@ -238,7 +241,6 @@
 
     edit: function(props) {
       var attributes = props.attributes
-      console.log(attributes.firstSunday, attributes.lastSunday);
 
       return (
         el('div', null,
@@ -347,11 +349,10 @@
           el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + getDateParts(firstSunday)[0] + '-' + getDateParts(lastSunday)[0]),
           !!nextSunday && (
             el('div', {className: 'ssc-calendar-this-sunday-container'},
-              el('strong', null, 'Nu på söndag:'),
-              el('p', null, nextSunday.date),
-              nextSunday.isSchoolDay && !!nextSunday.time && el('p', null, nextSunday.time),
-              nextSunday.isSchoolDay && !!nextSunday.notes && el('p', null, nextSunday.notes),
-              !nextSunday.isSchoolDay && el('p', null, 'Ingen skola.')
+              el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
+              nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
+              nextSunday.isSchoolDay && !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
+              !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola.')
             ) 
           ),
           el('table', null, 
