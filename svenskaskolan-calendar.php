@@ -15,18 +15,25 @@ Author:       Andreas McDermott
     $fallYear = $firstSunday.explode("-")[0];
     $springYear = $lastSunday.explode("-")[0];
 
-    $subtitle = "L&auml;s&aring;ret {$fallYear}-{$springYear}";
+    $subtitle = "<h3>L&auml;s&aring;ret {$fallYear}-{$springYear}</h3>";
+    $thisSunday = (
+      "<div class='ssc-calendar-this-sunday-container'>" .
+        "TODO" .
+      "</div>"
+    );
+    $calendar = (
+      "<div class='ssc-calendar-container'>" . 
+        "TODO" .
+      "</div>"
+    );
 
     return (
       "<div>" .
-        "<h3>{$subtitle}</h3>" .
-        "<div class='ssc-calendar-this-sunday-container'>" .
-        "</div>" .
-        "<div class='ssc-calendar-container'>" . 
-          "TODO" .
-        "</div>" .
+        "{$subtitle}" .
+        "{$thisSunday}" .
+        "{$calendar}" .
       "</div>"
-    )
+    );
   }
 
   function ssc_init() {
