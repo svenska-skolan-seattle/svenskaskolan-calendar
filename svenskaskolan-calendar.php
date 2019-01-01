@@ -62,20 +62,22 @@ Author:       Andreas McDermott
     "</div>";
   }
 
-  $month_names = array(
-    "01" => "Januari",
-    "02" => "Februari",
-    "03" => "Mars",
-    "04" => "April",
-    "05" => "Maj",
-    "06" => "Juni",
-    "07" => "Juli",
-    "08" => "Augusti",
-    "09" => "September",
-    "10" => "Oktober",
-    "11" => "November",
-    "12" => "December"
-  );
+  function ssc_get_month_name($month) {
+    return array(
+      "01" => "Januari",
+      "02" => "Februari",
+      "03" => "Mars",
+      "04" => "April",
+      "05" => "Maj",
+      "06" => "Juni",
+      "07" => "Juli",
+      "08" => "Augusti",
+      "09" => "September",
+      "10" => "Oktober",
+      "11" => "November",
+      "12" => "December"
+    )[$month];
+  }
 
   function ssc_render_semester($year, $schedule) {
     $curr_month = '';
@@ -97,7 +99,7 @@ Author:       Andreas McDermott
         if ($content != "") {
           $content .= '</div>';
         }
-        $month_name = $month_names[$month];
+        $month_name = ssc_get_month_name($month);
         $content .= "<div class='ssc-calendar-month'>" .
           "<strong class='ssc-month-title'>{$month} - {$month_name}</strong>";
       }
