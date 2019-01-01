@@ -196,6 +196,25 @@
     }
   }
 
+  var getMonthName = function(m) {
+    var months = [
+      'Januari',
+      'Februari',
+      'Mars',
+      'April',
+      'Maj',
+      'Juni',
+      'Juli',
+      'Augusti',
+      'September',
+      'Oktober',
+      'November',
+      'December'
+    ];
+
+    return months[m - 1];
+  }
+
   var createSchedule = function(firstSunday, lastSunday) {
     if (!firstSunday || !lastSunday) return [];
     var startDate = strToDate(firstSunday);
