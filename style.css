@@ -62,7 +62,7 @@
 
 .ssc-calendar-time {
   margin-right: 1rem;
-  min-width: 70px;
+  min-width: 75px;
   flex: none;
   white-space: nowrap;
 }
@@ -90,6 +90,7 @@
 
   .ssc-calendar-semester {
     width: 100%;
+    padding-top: 1rem;
   }
 
   .ssc-calendar-semester:last-child {
