@@ -12,7 +12,21 @@ Author:       Andreas McDermott
     $lastSunday = $attributes['lastSunday'];
     $schedule = $attributes['schedule'];
 
-    return $firstSunday . " - " . $lastSunday;
+    $fallYear = $firstSunday.explode("-")[0];
+    $springYear = $lastSunday.explode("-")[0];
+
+    $subtitle = "L&auml;s&aring;ret {$fallYear}-{$springYear}";
+
+    return (
+      "<div>" .
+        "<h3>{$subtitle}</h3>" .
+        "<div class='ssc-calendar-this-sunday-container'>" .
+        "</div>" .
+        "<div class='ssc-calendar-container'>" . 
+          "TODO" .
+        "</div>" .
+      "</div>"
+    )
   }
 
   function ssc_init() {
