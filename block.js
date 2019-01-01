@@ -243,6 +243,110 @@
     return newSchedule;
   }
 
+  var getScheduleForUpcomingSunday = function(schedule) {
+    var currentDate = formatDate(new Date());
+    var currentDateParts = getDateParts(currentDate);
+    var nextSundayDate = formatDate(getNextSunday(currentDateParts[0], currentDateParts[1], currentDateParts[2]));
+    var nextSunday = schedule.find(function(s) { return s.date === nextSundayDate; })
+
+    return !!nextSunday && (
+      el('div', {className: 'ssc-calendar-this-sunday-container'},
+        el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
+        nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
+        nextSunday.isSchoolDay && !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
+        !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola.')
+      ) 
+    )
+  }
+
+  var getHeaderCell = function(dateParts) {
+    return el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
+      getMonthName(dateParts[1]) + ' ' + dateParts[0]
+    )
+  }
+
+  var getEmptyCell = function() {
+    return el('td', {className: 'scc-schedule-cell-empty', colSpan: 2})
+  }
+
+  var getDateCell = function(dateParts) {
+    return el('td', {className: 'scc-schedule-cell-date'}, dateParts[2])
+  }
+
+  var getInfoCell = function(sunday) {
+    return sunday.isSchoolDay 
+      ? el('td', {className: 'scc-schedule-cell-info'}, 
+        sunday.notes,
+        sunday.time
+      ) 
+      : el('td', {className: 'scc-schedule-cell-info'},
+        'Ingen skola.'
+      ) 
+  }
+
+  var getScheduleRows = function(schedule, fallYear, springYear) {
+    var fallSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === fallYear});
+    var springSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === springYear});
+
+    var prevFm = '';
+    var prevSm = '';
+    var rows = [];
+    for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
+      var fall, fp, fm;
+      if (f < fallSchedule.length) {
+        fall = fallSchedule[f];
+        fp = getDateParts(fall.date);
+        fm = fp[1];
+      }
+
+      var spring, sp, sm;
+      if (s < springSchedule.length) {
+        spring = springSchedule[s];
+        sp = getDateParts(spring.date);
+        sm = sp[1];
+      }
+
+      var row = null;
+      if (prevFm === fm && prevSm === sm) {
+        row = el('tr', {className: 'scc-schedule-row'}, 
+          getDateCell(fp),
+          getInfoCell(fall),
+          getDateCell(sp),
+          getInfoCell(spring)
+        )
+        s++;
+        f++;
+      } else if (prevFm !== fm && prevSm !== sm) {
+        row = el('tr', {className: 'scc-schedule-row'}, 
+          getHeaderCell(fp),
+          getHeaderCell(sp)
+        )
+        prevFm = fm;
+        prevSm = sm;
+        s++;
+        f++;
+      } else if (prevFm === fm && prevSm !== sm) {
+        row = el('tr', {className: 'scc-schedule-row'},
+          getDateCell(fp),
+          getInfoCell(fall),
+          getEmptyCell()
+        )
+        f++;
+      } else if (prevFm !== fm && prevSm === sm) {
+        row = el('tr', {className: 'scc-schedule-row'},
+          getEmptyCell(),
+          getDateCell(sp),
+          getInfoCell(spring)
+        )
+        s++;
+      }
+
+      if (row) {
+        rows.push(row);
+      }
+    }
+  }
+
   registerBlockType('svenskaskolan/calendar', {
     title: i18n.__('Calendar'),
     description: i18n.__('A custom block for displaying school calendar.'),
@@ -360,108 +464,14 @@
 
       var fallYear = getDateParts(firstSunday)[0];
       var springYear = getDateParts(lastSunday)[0];
-      var currentDate = formatDate(new Date());
-      var currentDateParts = getDateParts(currentDate);
-      var nextSundayDate = formatDate(getNextSunday(currentDateParts[0], currentDateParts[1], currentDateParts[2]));
-      var nextSunday = schedule.find(function(s) {
-        return s.date === nextSundayDate;
-      })
 
-      var fallSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === fallYear});
-      var springSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === springYear});
-
-      var prevFallMonth = '';
-      var prevSpringMonth = '';
-      var fall, fp, fm;
-      var spring, sp, sm;
-      var row = null;
-      var rows = [];
-      for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
-        fm = null;
-        if (f < fallSchedule.length) {
-          fall = fallSchedule[f];
-          fp = getDateParts(fall.date);
-          fm = fp[1];
-        }
-
-        sm = null;
-        if (s < springSchedule.length) {
-          spring = springSchedule[s];
-          sp = getDateParts(spring.date);
-          sm = sp[1];
-        }
-
-        row = null;
-        if (prevFallMonth === fm && prevSpringMonth === sm) {
-          row = el('tr', {className: 'scc-schedule-row'}, 
-            el('td', {className: 'scc-schedule-cell-date'}, fp[1]),
-            el('td', {className: 'scc-schedule-cell-info'}, 
-              fall.notes,
-              el('br'),
-              fall.time
-            ),
-            el('td', {className: 'scc-schedule-cell-date'}, sp[1]),
-            el('td', {className: 'scc-schedule-cell-info'}, 
-              spring.notes,
-              el('br'),
-              spring.time
-            )
-          )
-          s++;
-          f++;
-        } else if (prevFallMonth !== fm && prevSpringMonth !== sm) {
-          row = el('tr', {className: 'scc-schedule-row'}, 
-            el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
-              getMonthName(fp[1]) + ' ' + fp[0]
-            ),
-            el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
-              getMonthName(sp[1]) + ' ' + sp[0]
-            ),
-          )
-          prevFallMonth = fm;
-          prevSpringMonth = sm;
-          s++;
-          f++;
-        } else if (prevFallMonth === fm && prevSpringMonth !== sm) {
-          row = el('tr', {className: 'scc-schedule-row'},
-            el('td', {className: 'scc-schedule-cell-date'}, fp[1]),
-            el('td', {className: 'scc-schedule-cell-info'}, 
-              fall.notes,
-              el('br'),
-              fall.time
-            ),
-            el('td', {className: 'scc-schedule-cell-empty', colSpan: 2}, '&nbsp;')
-          )
-          f++;
-        } else if (prevFallMonth !== fm && prevSpringMonth === sm) {
-          row = el('tr', {className: 'scc-schedule-row'},
-            el('td', {className: 'scc-schedule-cell-empty', colSpan: 2}, '&nbsp;'),
-            el('td', {className: 'scc-schedule-cell-date'}, sp[1]),
-            el('td', {className: 'scc-schedule-cell-info'}, 
-              spring.notes,
-              el('br'),
-              spring.time
-            )
-          )
-          s++;
-        }
-
-        if (row) {
-          rows.push(row);
-        }
-      }
-
+      var nextSunday = getScheduleForUpcomingSunday(schedule);
+      var rows = getScheduleRows(schedule, fallYear, springYear);
+      
       return (
         el('div', {className: 'ssc-calendar-container'},
-          el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + getDateParts(firstSunday)[0] + '-' + getDateParts(lastSunday)[0]),
-          !!nextSunday && (
-            el('div', {className: 'ssc-calendar-this-sunday-container'},
-              el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
-              nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
-              nextSunday.isSchoolDay && !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
-              !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola.')
-            ) 
-          ),
+          el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
+          nextSunday,
           el('table', null, 
             el('tbody', null, rows)
           )
