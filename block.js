@@ -339,12 +339,98 @@
       var schedule = attributes.schedule;
       if (!schedule || !schedule.length) return null;
 
+      var fallYear = getDateParts(firstSunday)[0];
+      var springYear = getDateParts(lastSunday)[0];
       var currentDate = formatDate(new Date());
       var currentDateParts = getDateParts(currentDate);
       var nextSundayDate = formatDate(getNextSunday(currentDateParts[0], currentDateParts[1], currentDateParts[2]));
       var nextSunday = schedule.find(function(s) {
         return s.date === nextSundayDate;
       })
+
+      var fallSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === fallYear});
+      var springSchedule = schedule.filter(function(s) { return getDateParts(s.date)[0] === springYear});
+
+      var prevFallMonth = '';
+      var prevSpringMonth = '';
+      var fall, fp, fm;
+      var spring, sp, sm;
+      var row = null;
+      var rows = [];
+      for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
+        fm = null;
+        if (f < fallSchedule.length) {
+          fall = fallSchedule[f];
+          fp = getDateParts(fall.date);
+          fm = fp[1];
+        }
+
+        sm = null;
+        if (s < springSchedule.length) {
+          spring = springSchedule[s];
+          sp = getDateParts(spring.date);
+          sm = sp[1];
+        }
+
+        row = null;
+        if (prevFallMonth === fm && prevSpringMonth === sm) {
+          row = el('tr', {className: 'scc-schedule-row'}, 
+            el('td', {className: 'scc-schedule-cell-date'}, fp[1]),
+            el('td', {className: 'scc-schedule-cell-info'}, 
+              fall.notes,
+              el('br'),
+              fall.time
+            ),
+            el('td', {className: 'scc-schedule-cell-date'}, sp[1]),
+            el('td', {className: 'scc-schedule-cell-info'}, 
+              spring.notes,
+              el('br'),
+              spring.time
+            )
+          )
+          s++;
+          f++;
+        } else if (prevFallMonth !== fm && prevSpringMonth !== sm) {
+          row = el('tr', {className: 'scc-schedule-row'}, 
+            el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
+              getMonthName(fp[1]) + ' ' + fp[0]
+            ),
+            el('td', {className: 'scc-schedule-cell-header', colSpan: 2}, 
+              getMonthName(sp[1]) + ' ' + sp[0]
+            ),
+          )
+          prevFallMonth = fm;
+          prevSpringMonth = sm;
+          s++;
+          f++;
+        } else if (prevFallMonth === fm && prevSpringMonth !== sm) {
+          row = el('tr', {className: 'scc-schedule-row'},
+            el('td', {className: 'scc-schedule-cell-date'}, fp[1]),
+            el('td', {className: 'scc-schedule-cell-info'}, 
+              fall.notes,
+              el('br'),
+              fall.time
+            ),
+            el('td', {className: 'scc-schedule-cell-empty', colSpan: 2}, '&nbsp;')
+          )
+          f++;
+        } else if (prevFallMonth !== fm && prevSpringMonth === sm) {
+          row = el('tr', {className: 'scc-schedule-row'},
+            el('td', {className: 'scc-schedule-cell-empty', colSpan: 2}, '&nbsp;'),
+            el('td', {className: 'scc-schedule-cell-date'}, sp[1]),
+            el('td', {className: 'scc-schedule-cell-info'}, 
+              spring.notes,
+              el('br'),
+              spring.time
+            )
+          )
+          s++;
+        }
+
+        if (row) {
+          rows.push(row);
+        }
+      }
 
       return (
         el('div', {className: 'ssc-calendar-container'},
