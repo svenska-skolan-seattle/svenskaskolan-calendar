@@ -24,7 +24,8 @@
   padding: 0.5rem;
   margin-bottom: 1rem;
   border-radius: 4px;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  border-top: 3px solid #275bc4;
 }
 
 .ssc-calendar-month:last-child {

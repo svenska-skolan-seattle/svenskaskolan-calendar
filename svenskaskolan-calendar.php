@@ -130,16 +130,18 @@ Author:       Andreas McDermott
     $schedule = $attributes["schedule"];
 
     $fall_schedule = array_filter($schedule, function($item) {
-      return strpos($item->date, $fallYear) == 0;
+      return strpos($item["date"], $fallYear) !== false;
     });
     $spring_schedule = array_filter($schedule, function($item) {
-      return strpos($item->date, $springYear) == 0;
+      return strpos($item["date"], $springYear) !== false;
     });
 
     $fall = ssc_render_semester($fallYear, $fall_schedule);
     $spring = ssc_render_semester($springYear, $spring_schedule);
 
-    return "<div class='ssc-calendar-container'>{$fall}{$spring}</div>";
+    return "<div class='ssc-calendar-container'>" .
+      "{$fall}{$spring}" . 
+    "</div>";
   }
 
   function ssc_render_block($attributes, $content) {
