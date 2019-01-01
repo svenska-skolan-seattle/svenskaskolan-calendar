@@ -1,8 +1,7 @@
-(function (blocks, editor, components, i18n, element) {
+(function (components) {
   var el = wp.element.createElement
   var registerBlockType = wp.blocks.registerBlockType
   var RichText = wp.editor.RichText
-  var BlockControls = wp.editor.BlockControls
   var InspectorControls = wp.editor.InspectorControls
   var TextControl = components.TextControl
   var SelectControl = components.SelectControl
@@ -196,25 +195,6 @@
     }
   }
 
-  var getMonthName = function(m) {
-    var months = [
-      'Januari',
-      'Februari',
-      'Mars',
-      'April',
-      'Maj',
-      'Juni',
-      'Juli',
-      'Augusti',
-      'September',
-      'Oktober',
-      'November',
-      'December'
-    ];
-
-    return months[m - 1];
-  }
-
   var createSchedule = function(firstSunday, lastSunday) {
     if (!firstSunday || !lastSunday) return [];
     var startDate = strToDate(firstSunday);
@@ -243,117 +223,9 @@
     return newSchedule;
   }
 
-  var getScheduleForUpcomingSunday = function(schedule) {
-    var currentDate = formatDate(new Date());
-    var currentDateParts = getDateParts(currentDate);
-    var nextSundayDate = formatDate(getNextSunday(currentDateParts[0], currentDateParts[1], currentDateParts[2]));
-    var nextSunday = schedule.find(function(s) { return s.date === nextSundayDate; })
-
-    return !!nextSunday && (
-      el('div', {className: 'ssc-calendar-this-sunday-container'},
-        el('strong', null, 'Nu på söndag (' + nextSunday.date + '):'),
-        nextSunday.isSchoolDay && !!nextSunday.time && el('p', {className: 'ssc-calendar-time'}, nextSunday.time),
-        !!nextSunday.notes && el('p', {className: 'ssc-calendar-notes'}, nextSunday.notes),
-        !nextSunday.isSchoolDay && el('p', {className: 'ssc-calendar-no-school'}, 'Ingen skola')
-      ) 
-    )
-  }
-
-  var getHeaderCell = function(dateParts) {
-    return el('th', {className: 'ssc-schedule-cell-header', colSpan: 2}, 
-      getMonthName(dateParts[1]) + ' ' + dateParts[0]
-    )
-  }
-
-  var getEmptyCell = function() {
-    return el('td', {className: 'ssc-schedule-cell-empty', colSpan: 2})
-  }
-
-  var getDateCell = function(dateParts) {
-    return el('td', {className: 'ssc-schedule-cell-date'}, dateParts[2])
-  }
-
-  var getInfoCell = function(sunday) {
-    return el('td', {className: 'ssc-schedule-cell-info'}, [
-        !!sunday.notes && el('p', {
-          key: 'notes',
-          className: 'ssc-schedule-cell-info-notes', 
-          dangerouslySetInnerHTML: {__html: sunday.notes}
-        }),
-        sunday.isSchoolDay && !!sunday.time && el('p', {
-          key: 'time',
-          className: 'ssc-schedule-cell-info-time',
-        }, sunday.time),
-        !sunday.isSchoolDay && el('p', {
-          key: 'no-school',
-          className: 'ssc-schedule-cell-info-no-school'
-        }, 'Ingen skola')
-      ])
-  }
-
-  var getScheduleRows = function(fallSchedule, springSchedule) {
-    var prevFm = '';
-    var prevSm = '';
-    var rows = [];
-    for (var f = 0, s = 0; f < fallSchedule.length || s < springSchedule.length;) {
-      var fall = null, fp = null, fm = null, fv = true;
-      if (f < fallSchedule.length) {
-        fall = fallSchedule[f];
-        fp = getDateParts(fall.date);
-        fm = fp[1];
-      } else fv = false;
-
-      var spring = null, sp = null, sm = null, sv = true;
-      if (s < springSchedule.length) {
-        spring = springSchedule[s];
-        sp = getDateParts(spring.date);
-        sm = sp[1];
-      } else sv = false;
-
-      var row = null;
-      if (prevFm === fm && prevSm === sm) {
-        row = el('tr', {className: 'ssc-schedule-row'}, 
-          getDateCell(fp),
-          getInfoCell(fall),
-          getDateCell(sp),
-          getInfoCell(spring)
-        )
-        s++;
-        f++;
-      } else if ((!fv || prevFm !== fm) && (!sv || prevSm !== sm)) {
-        row = el('tr', {className: 'ssc-schedule-row'}, 
-          fv ? getHeaderCell(fp) : getEmptyCell(),
-          sv ? getHeaderCell(sp) : getEmptyCell()
-        )
-        if (fv) prevFm = fm;
-        if (sv) prevSm = sm;
-      } else if (prevFm === fm && prevSm !== sm) {
-        row = el('tr', {className: 'ssc-schedule-row'},
-          getDateCell(fp),
-          getInfoCell(fall),
-          getEmptyCell()
-        )
-        f++;
-      } else if (prevFm !== fm && prevSm === sm) {
-        row = el('tr', {className: 'ssc-schedule-row'},
-          getEmptyCell(),
-          getDateCell(sp),
-          getInfoCell(spring)
-        )
-        s++;
-      }
-
-      if (row) {
-        rows.push(row);
-      }
-    }
-
-    return rows;
-  }
-
   registerBlockType('svenskaskolan/calendar', {
-    title: i18n.__('Calendar'),
-    description: i18n.__('A custom block for displaying school calendar.'),
+    title: 'Calendar',
+    description: 'A custom block for displaying school calendar.',
     icon: 'calendar-alt',
     category: 'common',
 
@@ -448,39 +320,11 @@
       )
     },
 
-    save: function(props) {
-      // var attributes = props.attributes;
-      // var firstSunday = attributes.firstSunday;
-      // var lastSunday = attributes.lastSunday;
-      // var schedule = attributes.schedule;
-      // if (!schedule || !schedule.length) return null;
-
-      // var fallYear = getDateParts(firstSunday)[0];
-      // var springYear = getDateParts(lastSunday)[0];
-
-      // var nextSunday = getScheduleForUpcomingSunday(schedule);
-      // var rows = getScheduleRows(
-      //   schedule.filter(function(s) { return s.date.indexOf(fallYear) === 0 }),
-      //   schedule.filter(function(s) { return s.date.indexOf(springYear) === 0 }));
-      
-      // return (
-      //   el('div', {className: 'ssc-calendar-container'},
-      //     el('h3', {className: 'ssc-subtitle'}, 'Läsåret ' + fallYear + '-' + springYear),
-      //     nextSunday,
-      //     el('table', {className: 'ssc-calendar-table'}, 
-      //       el('tbody', null, rows)
-      //     )
-      //   )
-      // );
+    save: function() {
       return null;
     }
   });
 
 })(
-  window.wp.blocks,
-  window.wp.editor,
-  window.wp.components,
-  window.wp.i18n,
-  window.wp.element,
-  window.wp.compose
+  window.wp.components
 );

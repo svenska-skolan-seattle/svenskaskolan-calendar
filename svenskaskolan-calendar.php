@@ -169,7 +169,7 @@ Author:       Andreas McDermott
     wp_register_script(
       'ssc-script',
       plugins_url( 'block.js', __FILE__ ),
-      array('wp-blocks', 'wp-components', 'wp-element', 'wp-i18n', 'wp-editor'),
+      array('wp-components'),
       filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ),
       true
     );
