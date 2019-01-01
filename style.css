@@ -4,14 +4,15 @@
   background: #fff;
 }
 
-.scc-calendar-table th {
-  text-align: center; width: 50%;
+.scc-schedule-cell-header {
+  text-align: center; 
+  width: 50%;
 }
 
 .scc-calendar-table td {
   vertical-align: middle;
 }
 
-.scc-calendar-table td:nth-child(odd) {
+.scc-schedule-cell-date {
   text-align: center;
 }
