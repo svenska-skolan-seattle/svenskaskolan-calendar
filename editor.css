@@ -24,13 +24,13 @@
   list-style-type: none;
 }
 
-.ssc-sunday-editor-row:first-child {
+.ssc-sunday-editor-row:first-of-type {
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
 
-.ssc-sunday-editor-row:first-child > *:first-child {
+.ssc-sunday-editor-row:first-of-type > *:first-child {
   margin-right: 1rem;
 }
 

@@ -172,7 +172,6 @@
           }),
         ),
         isSchoolDay && el('div', {className: 'ssc-sunday-editor-row'},
-          el('label', null, 'Additional information: '),
           el('div', {className: 'ssc-rich-text-container'}, 
             el(RichText, {
               value: notes,
