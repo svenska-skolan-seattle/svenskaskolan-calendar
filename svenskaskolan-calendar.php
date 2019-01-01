@@ -101,7 +101,7 @@ Author:       Andreas McDermott
         }
         $month_name = ssc_get_month_name($month);
         $content .= "<div class='ssc-calendar-month'>" .
-          "<strong class='ssc-month-title'>{$month} - {$month_name}</strong>";
+          "<strong class='ssc-month-title'>{$month_name}</strong>";
       }
 
       $content .= "<div class='ssc-calendar-week'>" .
@@ -130,10 +130,10 @@ Author:       Andreas McDermott
     $schedule = $attributes['schedule'];
 
     $fall_schedule = array_filter($schedule, function($item) {
-      return strpos($item['date'], $fallYear) == 0;
+      return strpos($item['date'], $fallYear) != false;
     });
     $spring_schedule = array_filter($schedule, function($item) {
-      return strpos($item['date'], $springYear) == 0;
+      return strpos($item['date'], $springYear) != false;
     });
 
     $fall = ssc_render_semester($fallYear, $fall_schedule);
