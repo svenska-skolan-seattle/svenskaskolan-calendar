@@ -62,7 +62,7 @@ Author:       Andreas McDermott
     "</div>";
   }
 
-  $months_names = array(
+  $month_names = array(
     "01" => "Januari",
     "02" => "Februari",
     "03" => "Mars",
