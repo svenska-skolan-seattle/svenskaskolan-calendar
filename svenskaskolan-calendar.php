@@ -122,18 +122,18 @@ Author:       Andreas McDermott
   }
 
   function ssc_render_calendar($attributes, $content) {
-    $firstSunday = $attributes['firstSunday'];
-    $lastSunday = $attributes['lastSunday'];
+    $firstSunday = $attributes["firstSunday"];
+    $lastSunday = $attributes["lastSunday"];
     $fallYear = explode("-", $firstSunday)[0];
     $springYear = explode("-", $lastSunday)[0];
 
-    $schedule = $attributes['schedule'];
+    $schedule = $attributes["schedule"];
 
     $fall_schedule = array_filter($schedule, function($item) {
-      return strpos($item["date"], $fallYear) == 0;
+      return strpos($item->date, $fallYear) == 0;
     });
     $spring_schedule = array_filter($schedule, function($item) {
-      return strpos($item["date"], $springYear) == 0;
+      return strpos($item->date, $springYear) == 0;
     });
 
     $fall = ssc_render_semester($fallYear, $fall_schedule);
