@@ -466,7 +466,7 @@
       var springYear = getDateParts(lastSunday)[0];
 
       var nextSunday = getScheduleForUpcomingSunday(schedule);
-      var rows = getScheduleRows(schedule, fallYear, springYear);
+      var rows = [];//getScheduleRows(schedule, fallYear, springYear);
       
       return (
         el('div', {className: 'ssc-calendar-container'},
