@@ -282,11 +282,11 @@
         }),
         sunday.isSchoolDay && !!sunday.time && el('p', {
           key: 'time',
-          className: 'ssc-schedule-info-time',
+          className: 'ssc-schedule-cell-info-time',
         }, sunday.time),
         !sunday.isSchoolDay && el('p', {
           key: 'no-school',
-          className: 'ssc-schedule-info-no-school'
+          className: 'ssc-schedule-cell-info-no-school'
         }, 'Ingen skola')
       ])
   }
