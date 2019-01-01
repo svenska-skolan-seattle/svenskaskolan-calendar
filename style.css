@@ -16,3 +16,8 @@
 .scc-schedule-cell-date {
   text-align: center;
 }
+
+.scc-schedule-cell-info p {
+  padding: 0;
+  margin: 0;
+}
