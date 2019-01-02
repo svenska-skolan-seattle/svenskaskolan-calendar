@@ -71,9 +71,9 @@
 
 .ssc-this-sunday-container {
   padding: 0.5rem;
-  background: #f0f0f0;
-  border-left: 4px solid #2A5EC0;
+  background: #fef390;
   margin-bottom: 1rem;
+  border-radius: 4px;
 }
 
 .ssc-this-sunday-title {
@@ -86,6 +86,8 @@
   margin: 0 !important;
   padding: 0;
 }
+
+/* Mobile */
 
 @media (max-width: 499px) {
   .ssc-calendar-container {
