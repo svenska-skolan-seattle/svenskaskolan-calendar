@@ -60,7 +60,7 @@ Author:       Andreas McDermott
     }
 
     return "<div class='ssc-this-sunday-container'>" .
-      "<strong class='ssc-this-sunday-title'>Nu p&aring; s&ouml;ndag ({$date}):</strong>" .
+      "<strong class='ssc-this-sunday-title'>Denna vecka ({$date}):</strong>" .
       (!empty($time) ? "<p class='ssc-this-sunday-time'>{$time}</p>" : "") .
       (!empty($notes) ? "<p class='ssc-this-sunday-notes'>{$notes}</p>" : "") .
     "</div>";
