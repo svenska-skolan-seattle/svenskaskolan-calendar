@@ -292,7 +292,6 @@
               }, 'Update Schedule'),
 
               el(Button, {
-                isDefault: true,
                 onClick: function() {
                   var schedule = createSchedule(
                     attributes.firstSunday, 
