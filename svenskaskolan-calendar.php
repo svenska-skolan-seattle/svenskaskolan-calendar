@@ -106,7 +106,7 @@ Author:       Andreas McDermott
           $content .= '</div>';
         }
         $month_name = ssc_get_month_name($month);
-        $content .= "<div class='ssc-calendar-month'>" .
+        $content .= "<div id='ssc-{$year}-{$month}' class='ssc-calendar-month'>" .
           "<strong class='ssc-month-title'>{$month_name}</strong>";
       }
 
@@ -124,7 +124,7 @@ Author:       Andreas McDermott
       $content .= "</div>";
     }
 
-    return "<div class='ssc-calendar-semester'>" .
+    return "<div id='ssc-{$year}' class='ssc-calendar-semester'>" .
         "<strong class='ssc-semester-title'>{$year}</strong>" . 
         $content .
       "</div>";
