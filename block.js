@@ -303,6 +303,7 @@
 
             el('div', {className: 'ssc-goto-this-week-container'},
               el(Button, {
+                isDefault: true,
                 onClick: function() {
                   var thisWeek = getNextSundayFromToday();
                   var date = formatDate(thisWeek);
