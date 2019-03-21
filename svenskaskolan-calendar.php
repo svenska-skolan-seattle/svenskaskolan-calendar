@@ -95,6 +95,8 @@ Author:       Andreas McDermott
       if (!$isSchoolDay) {
         $time = "Ingen skola";
       }
+
+      $year = $date_parts[0];
       $month = $date_parts[1];
       $day = $date_parts[2];
 
@@ -111,7 +113,7 @@ Author:       Andreas McDermott
       $is_upcoming = $item["date"] == $next_sunday;
       $extra_css = $is_upcoming ? "ssc-week-current" : "";
 
-      $content .= "<div class='ssc-calendar-week {$extra_css}'>" .
+      $content .= "<div id='ssc-{$year}-{$month}-{$day}' class='ssc-calendar-week {$extra_css}'>" .
         "<span class='ssc-calendar-day'>{$day}</span>" .
         (!empty($time) ? "<span class='ssc-calendar-time'>{$time}</span>" : "") .
         (!empty($notes) ? "<span class='ssc-calendar-notes'>{$notes}</span>" : "") .
