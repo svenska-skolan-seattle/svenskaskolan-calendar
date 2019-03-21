@@ -298,7 +298,7 @@
               }, 'Clear Schedule'),
             ),
 
-            el('div', {className: 'ssc-goto-this-week-container'}
+            el('div', {className: 'ssc-goto-this-week-container'},
               el(Button, {
                 onClick: function() {
                   var thisWeek = getNextSunday();
