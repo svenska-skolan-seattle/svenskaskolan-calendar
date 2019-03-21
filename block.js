@@ -153,7 +153,7 @@
     var time = value.time;
     var notes = value.notes;
     return (
-      el('li', {className: 'ssc-sunday-editor'},
+      el('li', {className: 'ssc-sunday-editor', id: 'ssc-' + date},
         el('strong', null, date),
         el('div', {className: 'ssc-sunday-editor-row'}, 
           el(CheckboxControl, {
@@ -297,6 +297,19 @@
                 }
               }, 'Clear Schedule'),
             ),
+
+            el('div', {className: 'ssc-goto-this-week-container'}
+              el(Button, {
+                onClick: function() {
+                  var thisWeek = getNextSunday();
+                  var date = formatDate(thisWeek);
+                  var el = document.body.querySelector('#ssc-' + date);
+                  if (el) {
+                    el.scrollIntoView();
+                  }
+                }
+              }, 'Goto this week')
+            )
           ),
 
           (!attributes.schedule || !attributes.schedule.length) 
