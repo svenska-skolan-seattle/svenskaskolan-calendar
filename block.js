@@ -303,7 +303,9 @@
                 onClick: function() {
                   var thisWeek = getNextSunday();
                   var date = formatDate(thisWeek);
+                  console.log(thisWeek, date);
                   var el = document.body.querySelector('#ssc-' + date);
+                  console.log(el);
                   if (el) {
                     el.scrollIntoView();
                   }
