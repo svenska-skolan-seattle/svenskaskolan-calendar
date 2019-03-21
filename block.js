@@ -21,6 +21,10 @@
     date.setDate(7 - weekday + date.getDate());
     return date;
   }
+  var getNextSundayFromToday = function () {
+    var date = new Date();
+    return getNextSunday(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  }
   var getAllSundaysInMonth = function(y, m) {
     var datemonth = m - 1;
     var date = getNextSunday(y, m);
@@ -301,7 +305,7 @@
             el('div', {className: 'ssc-goto-this-week-container'},
               el(Button, {
                 onClick: function() {
-                  var thisWeek = getNextSunday();
+                  var thisWeek = getNextSundayFromToday();
                   var date = formatDate(thisWeek);
                   console.log(thisWeek, date);
                   var el = document.body.querySelector('#ssc-' + date);
