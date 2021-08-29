@@ -31,6 +31,7 @@
   width: 25%;
   background: #fef390;
   bottom: 3px;
+  z-index: -1;
 }
 
 .ssc-past-year .ssc-semester-title {
@@ -62,13 +63,14 @@
 .ssc-month-current .ssc-month-title::before {
   content: "";
   display: block;
-  height: 8px;
+  height: 6px;
   position: absolute;
   left: 0;
   transform: translateX(-50%);
   width: 125%;
   background: #fef390;
-  bottom: 3px;
+  bottom: 2px;
+  z-index: -1;
 }
 
 .ssc-past-month .ssc-month-title {
