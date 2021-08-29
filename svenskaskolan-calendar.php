@@ -14,6 +14,10 @@ Author:       Andreas McDermott
     return "{$year}-{$month}-{$day}";
   }
 
+  function ssc_is_past_date($date) {
+    return strtotime($date) < time();
+  }
+
   function today_is_sunday() {
     $date = getdate();
     $weekday = $date['wday'];
@@ -87,6 +91,11 @@ Author:       Andreas McDermott
     $next_sunday = ssc_get_next_sunday();
     $curr_month = '';
     $content = '';
+    
+    $today = getdate();
+    $today_year = $today['year'];
+    $today_month = $today['mon'];
+    
     foreach($schedule as $item) {
       $date_parts = explode("-", $item["date"]);
       $time = $item["time"];
@@ -106,12 +115,16 @@ Author:       Andreas McDermott
           $content .= '</div>';
         }
         $month_name = ssc_get_month_name($month);
-        $content .= "<div id='ssc-{$year}-{$month}' class='ssc-calendar-month'>" .
+        $is_past_month = ($year < $today_year) || ($year == $today_year && $month < $today_month);
+        $content .= "<div id='ssc-{$year}-{$month}' class='ssc-calendar-month " . ($is_past_month ? "ssc-past-month" : "") .  "'>" .
           "<strong class='ssc-month-title'>{$month_name}</strong>";
       }
 
       $is_upcoming = $item["date"] == $next_sunday;
-      $extra_css = $is_upcoming ? "ssc-week-current" : "";
+      $is_past = ssc_is_past_date($item["date"]);
+      
+      $extra_css = $is_upcoming ? "ssc-week-current " : "";
+      $extra_css = $extra_css . ($is_past ? "ssc-past-week" : "");
 
       $content .= "<div id='ssc-{$year}-{$month}-{$day}' class='ssc-calendar-week {$extra_css}'>" .
         "<span class='ssc-calendar-day'>{$day}</span>" .
@@ -124,7 +137,7 @@ Author:       Andreas McDermott
       $content .= "</div>";
     }
 
-    return "<div id='ssc-{$year}' class='ssc-calendar-semester'>" .
+    return "<div id='ssc-{$year}' class='ssc-calendar-semester " . ($year < $today_year ? "ssc-past-year" : "") . "'>" .
         "<strong class='ssc-semester-title'>{$year}</strong>" . 
         $content .
       "</div>";
