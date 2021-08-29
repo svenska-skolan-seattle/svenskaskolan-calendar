@@ -89,6 +89,10 @@ Author:       Andreas McDermott
 
   function ssc_render_semester($year, $schedule) {
     $next_sunday = ssc_get_next_sunday();
+    $next_sunday_date = getdate(strtotime($next_sunday));
+    $next_sunday_year = $next_sunday_date['year'];
+    $next_sunday_month = $next_sunday_date['mon'];
+    
     $curr_month = '';
     $content = '';
     
@@ -116,7 +120,9 @@ Author:       Andreas McDermott
         }
         $month_name = ssc_get_month_name($month);
         $is_past_month = ($year < $today_year) || ($year == $today_year && $month < $today_month);
-        $content .= "<div id='ssc-{$year}-{$month}' class='ssc-calendar-month " . ($is_past_month ? "ssc-past-month" : "") .  "'>" .
+        $content .= "<div id='ssc-{$year}-{$month}' class='ssc-calendar-month " . 
+            ($is_past_month ? "ssc-past-month " : "") . ($next_sunday_month == $month ? "ssc-month-current" : "") . 
+          "'>" .
           "<strong class='ssc-month-title'>{$month_name}</strong>";
       }
 
@@ -137,8 +143,10 @@ Author:       Andreas McDermott
       $content .= "</div>";
     }
 
-    return "<div id='ssc-{$year}' class='ssc-calendar-semester " . ($year < $today_year ? "ssc-past-year" : "") . "'>" .
-        "<strong class='ssc-semester-title'>{$year}</strong>" . 
+    return "<div id='ssc-{$year}' class='ssc-calendar-semester " . 
+        ($year < $today_year ? "ssc-past-year " : "") . ($next_sunday_year == $year ? "ssc-year-current" : "") . 
+      "'>" .
+      "<strong class='ssc-semester-title'>{$year}</strong>" . 
         $content .
       "</div>";
   }
