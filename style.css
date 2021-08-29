@@ -3,6 +3,7 @@
 .ssc-calendar-container {
   display: flex;
   justify-content: space-between;
+  min-width: 600px;
 }
 
 .ssc-calendar-semester {
@@ -17,6 +18,19 @@
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   text-align: center;
+  position: relative;
+}
+
+.ssc-year-current .ssc-semester-title::before {
+   content: "";
+  display: block;
+  height: 8px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25%;
+  background: #fef390;
+  bottom: 3px;
 }
 
 .ssc-past-year .ssc-semester-title {
@@ -30,6 +44,7 @@
   border-radius: 4px;
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
   border-top: 2px solid #275bc4;
+  position: relative;
 }
 
 .ssc-calendar-month:last-child {
@@ -37,9 +52,23 @@
 }
 
 .ssc-month-title {
-  display: block;
+  display: inline-block;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  position: relative;
+}
+
+
+.ssc-month-current .ssc-month-title::before {
+  content: "";
+  display: block;
+  height: 8px;
+  position: absolute;
+  left: 0;
+  transform: translateX(-50%);
+  width: 125%;
+  background: #fef390;
+  bottom: 3px;
 }
 
 .ssc-past-month .ssc-month-title {
