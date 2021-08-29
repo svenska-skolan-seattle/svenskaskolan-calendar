@@ -146,8 +146,11 @@ Author:       Andreas McDermott
       $content .= "</div>";
     }
 
+    $past_year = $year < $today_year || $year == $today_year && $today_month > $last_semester_month;
+    $curr_year = $next_sunday_year == $year && !$past_year;
+    
     return "<div id='ssc-{$year}' class='ssc-calendar-semester " . 
-        ($year < $today_year ? "ssc-past-year " : "") . ($next_sunday_year == $year && $today_month <= $last_semester_month ? "ssc-year-current" : "") . 
+        ($past_year ? "ssc-past-year " : "") . ($curr_year ? "ssc-year-current" : "") . 
       "'>" .
       "<strong class='ssc-semester-title'>{$year}</strong>" . 
         $content .
