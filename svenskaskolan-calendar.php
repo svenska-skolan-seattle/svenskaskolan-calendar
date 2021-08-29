@@ -100,6 +100,8 @@ Author:       Andreas McDermott
     $today_year = $today['year'];
     $today_month = $today['mon'];
     
+    $last_semester_month = '';
+    
     foreach($schedule as $item) {
       $date_parts = explode("-", $item["date"]);
       $time = $item["time"];
@@ -114,6 +116,7 @@ Author:       Andreas McDermott
       $day = $date_parts[2];
 
       if ($month != $curr_month) {
+        $last_semester_month = getdate(strtotime($item["date"]))['mon'];
         $curr_month = $month;
         if ($content != "") {
           $content .= '</div>';
@@ -144,7 +147,7 @@ Author:       Andreas McDermott
     }
 
     return "<div id='ssc-{$year}' class='ssc-calendar-semester " . 
-        ($year < $today_year ? "ssc-past-year " : "") . ($next_sunday_year == $year ? "ssc-year-current" : "") . 
+        ($year < $today_year ? "ssc-past-year " : "") . ($next_sunday_year == $year && $today_month <= $last_semester_month ? "ssc-year-current" : "") . 
       "'>" .
       "<strong class='ssc-semester-title'>{$year}</strong>" . 
         $content .
