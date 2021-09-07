@@ -79,6 +79,7 @@
 
 .ssc-calendar-week {
   display: flex;
+  align-items: flex-start;
   padding: 0.2rem 0;
   border-bottom: 1px solid #f0f0f0
 }
@@ -91,8 +92,16 @@
   border-bottom: none;
 }
 
-.ssc-week-current {
+.ssc-week-current .ssc-calendar-day::before {
+  content: "";
+  display: block;
+  height: 6px;
+  position: absolute;
+  left: 0;
+  width: 125%;
   background: #fef390;
+  bottom: 3px;
+  z-index: -1;
 }
 
 .ssc-calendar-day {
@@ -101,6 +110,8 @@
   margin-right: 1rem;
   flex: none;
   text-align: right;
+  position: relative;
+  z-index: 1;
 }
 
 .ssc-calendar-time {
