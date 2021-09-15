@@ -147,10 +147,11 @@
   .ssc-calendar-container {
     justify-content: flex-start;
     flex-direction: column;
+    min-width: unset
   }
 
   .ssc-calendar-semester {
-    max-width: 100%;
+    width: 100%;
     padding-top: 1rem;
   }
 
